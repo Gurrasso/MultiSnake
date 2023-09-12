@@ -19,9 +19,15 @@ function createGrid(grid, size){
 function drawGrid(grid, gs){
   for(i=0; i<grid.length;i++){
     for(j=0; j<grid[i].length;j++){
-      fill(0);
-      noStroke();
-      rect((width/gs) * i[j], (height/gs) * i, width/gs);
+      if((i+j) % 2 == 0){
+        fill(0);
+        noStroke();
+        rect((width/gs) * grid[i][j], (height/gs) * i, width/gs);
+      }else {
+        fill(255);
+        noStroke();
+        rect((width/gs) * grid[i][j], (height/gs) * i, width/gs);
+      }
     }
   }
 }
