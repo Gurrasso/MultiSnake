@@ -6,13 +6,22 @@ class Grid {
 }
 
 function createGrid(grid, size){
-  for(i=0; i<size;i++){
-    for(j=0; j<size;j++){
-      grid.push([i,j])
+  const arr = []
+  for (let i = 0; i < size; i++) {
+  arr[i] = [];
+    for (let j = 0; j < size; j++) {
+      arr[i][j] = j;
     }
   }
+  return arr
 }
 
-function drawGrid(grid){
-  
+function drawGrid(grid, gs){
+  for(i=0; i<grid.length;i++){
+    for(j=0; j<grid[i].length;j++){
+      fill(0);
+      noStroke();
+      rect((width/gs) * i[j], (height/gs) * i, width/gs);
+    }
+  }
 }

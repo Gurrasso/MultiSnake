@@ -1,5 +1,5 @@
 var cnv;
-gridSize = 10
+gridSize = 9
 
 function centerCanvas() {
   var x = (windowWidth - width) / 2;
@@ -15,7 +15,7 @@ function setup() {
   }
   centerCanvas();
   grid = new Grid(gridSize)
-  createGrid(grid.grid, grid.size)
+  grid.grid = createGrid(grid.grid, grid.size, grid.size)
   console.log(grid.grid);
 }
 
@@ -24,5 +24,5 @@ function windowResized() {
 }
 
 function draw(){
-  background(0);
+  drawGrid(grid.grid, grid.size)
 }
