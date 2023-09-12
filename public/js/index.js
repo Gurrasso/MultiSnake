@@ -26,11 +26,3 @@ function windowResized() {
 function draw(){
   background(0);
 }
-
-function createGrid(grid, size){
-  for(i=0; i<size;i++){
-    for(j=0; j<size;j++){
-      grid.push([i,j])
-    }
-  }
-}
