@@ -16,7 +16,7 @@ function setup() {
   centerCanvas();
   grid = new Grid(gridSize)
   grid.grid = createGrid(grid.grid, grid.size, grid.size)
-  console.log(grid.grid);
+  spawnPlayer(grid);
 }
 
 function windowResized() {
@@ -25,4 +25,7 @@ function windowResized() {
 
 function draw(){
   drawGrid(grid.grid, grid.size)
+  frameRate(5);
+  player.update();
+  player.draw();
 }
