@@ -1,5 +1,5 @@
 var cnv;
-gridSize = 9
+gridSize = 15
 
 function centerCanvas() {
   var x = (windowWidth - width) / 2;
