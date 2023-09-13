@@ -17,6 +17,7 @@ function setup() {
   grid = new Grid(gridSize)
   grid.grid = createGrid(grid.grid, grid.size, grid.size)
   spawnPlayer(grid);
+  food = new Food(grid);
 }
 
 function windowResized() {
@@ -25,7 +26,10 @@ function windowResized() {
 
 function draw(){
   drawGrid(grid.grid, grid.size)
+  food.draw()
+  checkIfEat()
   frameRate(5);
   player.update();
   player.draw();
+
 }

@@ -20,11 +20,11 @@ function drawGrid(grid, gs){
   for(i=0; i<grid.length;i++){
     for(j=0; j<grid[i].length;j++){
       if((i+j) % 2 == 0){
-        fill(40);
+        fill(0, 150, 9);
         noStroke();
         rect((width/gs) * grid[i][j], (height/gs) * i, width/gs);
       }else {
-        fill(235);
+        fill(0, 200, 0);
         noStroke();
         rect((width/gs) * grid[i][j], (height/gs) * i, width/gs);
       }
