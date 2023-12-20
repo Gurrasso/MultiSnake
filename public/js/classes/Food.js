@@ -1,8 +1,8 @@
 //a food class that spawns food for the player to eat
 class  Food {
-  constructor(grid) {
-    this.x = random(grid.grid[0]);
-    this.y = random(grid.grid[0]);
+  constructor({grid, x, y}) {
+    this.x = x;
+    this.y = y;
   }
 
   //draws food on to the screen
@@ -13,7 +13,7 @@ class  Food {
 }
 
 //checks if the player has eaten the food
-function checkIfEat(){
+function checkIfEat(player){
   if(player.body[player.body.length-1].x == food.x && player.body[player.body.length-1].y == food.y){
     player.grow();
     food = new Food(grid);
