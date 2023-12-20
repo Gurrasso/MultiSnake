@@ -7,7 +7,9 @@ const app = express()
 const http = require("http")
 const server = http.createServer(app)
 const { Server } = require('socket.io');
-const io = new Server(server);
+const io = new Server(server, {pingInterval: 2000,
+  pingTimeout: 4000});
+  
 //specify the computer port it will be broadcasted from
 const port = 3000
 //make the app file public
@@ -22,10 +24,16 @@ const players = {}
 io.on('connection', (socket) => {
   console.log('a user connected');
   players[socket.id] = {
-    x: 2,
-    y: 3,
+    x: Math.floor(Math.random() * gridSize),
+    y: Math.floor(Math.random() * gridSize),
     gridSize: gridSize
   }
+
+  socket.on("disconnect", (reason) =>{
+    console.log(reason)
+    delete players[socket.id];
+    io.emit("updatePlayers", players)
+  })
 
   io.emit("updatePlayers", players)
 

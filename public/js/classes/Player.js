@@ -1,11 +1,12 @@
 //A player class with different vals
 class Player {
-  constructor(grid) {
+  constructor({grid, color}) {
     this.body = [];
     this.ydir = 0;
     this.xdir = 0;
     this.grid = grid;
     this.len = 1;
+    this.color = color;
   }
 
   //Updates all of the things for the snake
@@ -28,7 +29,7 @@ class Player {
   }
   //draws the Player
   draw(){
-    fill(0, 40, 200);
+    fill(this.color);
     for (let i = 0; i < this.body.length; i++) {
       rect((width/grid.size)*this.body[i].x, (height/grid.size)*this.body[i].y, height/grid.size);
     }
@@ -44,24 +45,5 @@ class Player {
     let temp = this.body[this.body.length-1].copy();
     this.body.push(temp);
     this.len+=1;
-  }
-}
-
-//input for changing the player position + other player related functions maybe
-function keyPressed() {
-  if(player.grid == grid){
-    if (keyCode === LEFT_ARROW) {
-      player.xdir = -1;
-      player.ydir = 0;
-    } else if (keyCode === RIGHT_ARROW) {
-      player.xdir = 1;
-      player.ydir = 0;
-    } else if (keyCode === UP_ARROW) {
-      player.xdir = 0;
-      player.ydir = -1;
-    } else if (keyCode === DOWN_ARROW) {
-      player.xdir = 0;
-      player.ydir = 1;
-    }
   }
 }

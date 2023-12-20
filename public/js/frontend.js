@@ -1,7 +1,9 @@
 var cnv;
 
 //creates the const for all frontend players
-const players = {}
+const frontEndPlayers = {}
+//creates the socket for this frontend
+const socket = io();
 
 //creates the canvas
 function centerCanvas() {
@@ -9,8 +11,6 @@ function centerCanvas() {
   var y = (windowHeight - height) / 2;
   cnv.position(x, y);
 }
-
-const socket = io();
 
 //does all the nesessary things for setting up the game
 function setup() {
@@ -25,21 +25,37 @@ function setup() {
 }
 
 //Puts new players into the players obj where we can see thier basic info
-socket.on("updatePlayers", (backendPlayers)=>{
-  for(const id in backendPlayers){
-    const backendPlayer = backendPlayers[id]
+socket.on("updatePlayers", (backEndPlayers)=>{
+  for(const id in backEndPlayers){
+    const backEndPlayer = backEndPlayers[id]
 
-    if(!players[id]){
+    if(!frontEndPlayers[id]){
       //creates new grid
-      grid = new Grid(backendPlayer.gridSize)
+      grid = new Grid(backEndPlayer.gridSize)
       //creates the actual grid inside the grid class
       grid.grid = createGrid(grid.grid, grid.size, grid.size)
       //create a new player
-      players[id] = new Player(grid);
-      //give the player an x and y
-      players[id].body[0] = createVector(backendPlayer.x, backendPlayer.y)
+      frontEndPlayers[id] = new Player({
+        grid:grid,
+        color:"hsl(272, 61%, 34%)"
+      });
+
+      try{
+        //give the player an x and y
+        frontEndPlayers[id].body[0] = createVector(backEndPlayer.x, backEndPlayer.y)
+      }catch{
+        return
+      }
     }
   }
+  //delete disconnected players
+  for(const id in frontEndPlayers){
+    if(!backEndPlayers[id]){
+      delete backEndPlayers[id]
+    }
+  }
+
+  console.log(frontEndPlayers);
 })
 
 function windowResized() {
@@ -50,8 +66,8 @@ function windowResized() {
 function draw(){
   drawGrid(grid.grid, grid.size)
   //draw out all the players
-  for(const id in players){
-    const player = players[id]
+  for(const id in frontEndPlayers){
+    const player = frontEndPlayers[id]
     player.draw()
   }
 
