@@ -5,6 +5,8 @@ const frontEndPlayers = {}
 //creates the socket for this frontend
 const socket = io();
 
+const devicePixelRatio = window.devicePixelRatio || 1
+
 //creates the canvas
 function centerCanvas() {
   var x = (windowWidth - width) / 2;
@@ -22,6 +24,7 @@ function setup() {
   //centers the canvas
   centerCanvas();
   grid = new Grid(0)
+  colorMode(RGB, 255);
 }
 
 //Puts new players into the players obj where we can see thier basic info
@@ -29,6 +32,7 @@ socket.on("updatePlayers", (backEndPlayers)=>{
   for(const id in backEndPlayers){
     const backEndPlayer = backEndPlayers[id]
 
+    //check if the player already exists
     if(!frontEndPlayers[id]){
       //creates new grid
       grid = new Grid(backEndPlayer.gridSize)
@@ -36,8 +40,8 @@ socket.on("updatePlayers", (backEndPlayers)=>{
       grid.grid = createGrid(grid.grid, grid.size, grid.size)
       //create a new player
       frontEndPlayers[id] = new Player({
-        grid:grid,
-        color:"hsl(272, 61%, 34%)"
+        grid: grid,
+        color: color(backEndPlayer.r, backEndPlayer.g, backEndPlayer.b)
       });
 
       try{
@@ -54,8 +58,6 @@ socket.on("updatePlayers", (backEndPlayers)=>{
       delete backEndPlayers[id]
     }
   }
-
-  console.log(frontEndPlayers);
 })
 
 function windowResized() {
