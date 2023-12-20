@@ -38,18 +38,26 @@ socket.on("updatePlayers", (backEndPlayers)=>{
       grid = new Grid(backEndPlayer.gridSize)
       //creates the actual grid inside the grid class
       grid.grid = createGrid(grid.grid, grid.size, grid.size)
-      //create a new player
-      frontEndPlayers[id] = new Player({
-        grid: grid,
-        color: color(backEndPlayer.r, backEndPlayer.g, backEndPlayer.b)
-      });
 
       try{
+        //create a new player
+        frontEndPlayers[id] = new Player({
+          grid: grid,
+          color: color(backEndPlayer.r, backEndPlayer.g, backEndPlayer.b),
+          xdir: backEndPlayer.xdir,
+          ydir: backEndPlayer.ydir,
+          body: backEndPlayer.body
+        });
         //give the player an x and y
-        frontEndPlayers[id].body[0] = createVector(backEndPlayer.x, backEndPlayer.y)
+        frontEndPlayers[id].body[0] =[backEndPlayer.x, backEndPlayer.y]
       }catch{
         return
       }
+    } else {
+      //if a player already exists
+      frontEndPlayers[id].xdir = backEndPlayer.xdir
+      frontEndPlayers[id].ydir = backEndPlayer.ydir
+      frontEndPlayers[id].body = backEndPlayer.body
     }
   }
   //delete disconnected players
@@ -58,6 +66,7 @@ socket.on("updatePlayers", (backEndPlayers)=>{
       delete backEndPlayers[id]
     }
   }
+  frontEndPlayers[socket.id].color = color(0, 0, 255)
 })
 
 function windowResized() {
@@ -71,6 +80,7 @@ function draw(){
   for(const id in frontEndPlayers){
     const player = frontEndPlayers[id]
     player.draw()
+    player.update()
   }
 
 }

@@ -1,9 +1,7 @@
 //A player class with different vals
 class Player {
-  constructor({grid, color}) {
-    this.body = [];
-    this.ydir = 0;
-    this.xdir = 0;
+  constructor({grid, color, body}) {
+    this.body = body;
     this.grid = grid;
     this.len = 1;
     this.color = color;
@@ -11,11 +9,6 @@ class Player {
 
   //Updates all of the things for the snake
   update(){
-    let head = this.body[this.body.length-1].copy();
-    this.body.shift();
-    head.x += this.xdir;
-    head.y += this.ydir;
-    this.body.push(head);
     //checks if player is outside of area
     if(this.body[0].x < 0 || this.body[0].x >= this.grid.size || this.body[0].y < 0 || this.body[0].y >= this.grid.size){
       this.die()
@@ -31,7 +24,7 @@ class Player {
   draw(){
     fill(this.color);
     for (let i = 0; i < this.body.length; i++) {
-      rect((width/grid.size)*this.body[i].x, (height/grid.size)*this.body[i].y, height/grid.size);
+      rect((width/grid.size)*this.body[i][0], (height/grid.size)*this.body[i][1], height/grid.size);
     }
   }
 
