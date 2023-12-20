@@ -1,3 +1,4 @@
+//A grid class for the players to reside on
 class Grid {
   constructor(Size) {
     this.size = Size;
@@ -5,6 +6,7 @@ class Grid {
   }
 }
 
+//function that creates the grid in a form of array
 function createGrid(grid, size){
   const arr = []
   for (let i = 0; i < size; i++) {
@@ -16,6 +18,7 @@ function createGrid(grid, size){
   return arr
 }
 
+//draws the grid on to the screen
 function drawGrid(grid, gs){
   for(i=0; i<grid.length;i++){
     for(j=0; j<grid[i].length;j++){
