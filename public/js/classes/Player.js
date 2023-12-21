@@ -1,9 +1,10 @@
 //A player class with different vals
 class Player {
-  constructor({grid, color, body}) {
+  constructor({grid, color, body, len}) {
     this.body = body;
     this.grid = grid;
     this.color = color;
+    this.len = len;
   }
 
   //Updates all of the things for the snake
@@ -29,12 +30,7 @@ class Player {
 
   //does the actions needed for the player to die
   die(){
-    console.log("ded");
-  }
-
-  //grows the player by 1
-  grow(){
-    let temp = this.body[this.body.length-1].copy();
-    this.body.push(temp);
+    //console.log("ded");
+    return
   }
 }

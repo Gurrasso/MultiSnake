@@ -11,11 +11,3 @@ class  Food {
     rect((width/grid.size)*this.x, (height/grid.size)*this.y, height/grid.size);
   }
 }
-
-//checks if the player has eaten the food
-function checkIfEat(player){
-  if(player.body[player.body.length-1].x == food.x && player.body[player.body.length-1].y == food.y){
-    player.grow();
-    food = new Food(grid);
-  }
-}

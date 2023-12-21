@@ -44,7 +44,8 @@ io.on('connection', (socket) => {
     ydir: 0,
     body: [[x, y]],
     gridSize: gridSize,
-    sequenceNumber: 0
+    sequenceNumber: 0,
+    len: 0
   }
 
   io.emit("updatePlayers", backEndPlayers)
@@ -89,7 +90,7 @@ io.on('connection', (socket) => {
 setInterval(() => {
   for(const id in backEndPlayers){
     //move player
-    var head = backEndPlayers[id].body[backEndPlayers[id].body.length-1];
+    let head = backEndPlayers[id].body[backEndPlayers[id].body.length-1];
     backEndPlayers[id].body.shift();
     head[0] += backEndPlayers[id].xdir;
     head[1] += backEndPlayers[id].ydir;
@@ -98,6 +99,24 @@ setInterval(() => {
 }, 120)
 
 setInterval(() => {
+  for(const id in backEndPlayers){
+    //check if player has eaten food
+    for(const i in backEndFood){
+      if(backEndPlayers[id].body[backEndPlayers[id].body.length-1][0] == backEndFood[i].x && backEndPlayers[id].body[backEndPlayers[id].body.length-1][1] == backEndFood[i].y){
+        //grow player
+        let head = backEndPlayers[id].body[backEndPlayers[id].body.length-1];
+        console.log(head)
+        console.log(backEndPlayers[id].body[backEndPlayers[id].body.length-1])
+        backEndPlayers[id].len++;
+        backEndPlayers[id].body.push(head);
+        //remove food and spawn new one
+        backEndFood[i] = {
+          x: Math.floor(Math.random() * gridSize),
+          y: Math.floor(Math.random() * gridSize)
+        }
+      }
+    }
+  }
   io.emit("updatePlayers", backEndPlayers)
   io.emit("updateFood", backEndFood)
 }, 15)

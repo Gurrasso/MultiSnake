@@ -44,7 +44,8 @@ socket.on("updatePlayers", (backEndPlayers)=>{
           color: color(backEndPlayer.r, backEndPlayer.g, backEndPlayer.b),
           xdir: backEndPlayer.xdir,
           ydir: backEndPlayer.ydir,
-          body: backEndPlayer.body
+          body: backEndPlayer.body,
+          len: backEndPlayer.len
         });
         //give the player an x and y
         frontEndPlayers[id].body[0] =[backEndPlayer.x, backEndPlayer.y]
@@ -57,6 +58,7 @@ socket.on("updatePlayers", (backEndPlayers)=>{
         frontEndPlayers[id].xdir = backEndPlayer.xdir
         frontEndPlayers[id].ydir = backEndPlayer.ydir
         frontEndPlayers[id].body = backEndPlayer.body
+        frontEndPlayers[id].len = backEndPlayer.len
         //splicing out all the non needed indexes
         // const lastBackendInputIndex = playerInputs.findIndex(input => {
         //   return backEndPlayers.sequenceNumber === input.sequenceNumber
@@ -74,6 +76,7 @@ socket.on("updatePlayers", (backEndPlayers)=>{
         frontEndPlayers[id].xdir = backEndPlayer.xdir
         frontEndPlayers[id].ydir = backEndPlayer.ydir
         frontEndPlayers[id].body = backEndPlayer.body
+        frontEndPlayers[id].len = backEndPlayer.len
 
         // for(i = 0; i < frontEndPlayers[id].body.length; i++){
         //   gsap.to(frontEndPlayers[id].body[i], {
@@ -103,7 +106,6 @@ socket.on("updateFood", (backEndFood)=>{
         x: backEndFood.x,
         y: backEndFood.y
       })
-      console.log(frontEndFood)
     }else {
       if(id === socket.id){
         frontEndFood[id].x = backEndFood[id].x;
