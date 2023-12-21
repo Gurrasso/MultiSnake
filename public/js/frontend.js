@@ -4,9 +4,6 @@ var cnv;
 const frontEndPlayers = {}
 //creates the socket for this frontend
 const socket = io();
-
-const devicePixelRatio = window.devicePixelRatio || 1
-
 //creates the canvas
 function centerCanvas() {
   var x = (windowWidth - width) / 2;
@@ -54,6 +51,12 @@ socket.on("updatePlayers", (backEndPlayers)=>{
         return
       }
     } else {
+      //move player
+      var head = frontEndPlayers[socket.id].body[frontEndPlayers[socket.id].body.length-1];
+      frontEndPlayers[socket.id].body.shift();
+      head[0] += frontEndPlayers[socket.id].xdir;
+      head[1] += frontEndPlayers[socket.id].ydir;
+      frontEndPlayers[socket.id].body.push(head);
       //if a player already exists
       frontEndPlayers[id].xdir = backEndPlayer.xdir
       frontEndPlayers[id].ydir = backEndPlayer.ydir
@@ -63,7 +66,7 @@ socket.on("updatePlayers", (backEndPlayers)=>{
   //delete disconnected players
   for(const id in frontEndPlayers){
     if(!backEndPlayers[id]){
-      delete backEndPlayers[id]
+      delete frontEndPlayers[id]
     }
   }
   frontEndPlayers[socket.id].color = color(0, 0, 255)
@@ -82,5 +85,4 @@ function draw(){
     player.draw()
     player.update()
   }
-
 }

@@ -52,23 +52,23 @@ io.on('connection', (socket) => {
   socket.on("keyPressed", (keycode) =>{
     switch (keycode){
       case "KeyW":
-      backEndPlayers[socket.id].xdir = 0;
-      backEndPlayers[socket.id].ydir = -1;
+        backEndPlayers[socket.id].xdir = 0;
+        backEndPlayers[socket.id].ydir = -1;
         break
 
       case "KeyA":
-      backEndPlayers[socket.id].xdir = -1;
-      backEndPlayers[socket.id].ydir = 0;
+        backEndPlayers[socket.id].xdir = -1;
+        backEndPlayers[socket.id].ydir = 0;
         break
 
       case "KeyS":
-      backEndPlayers[socket.id].xdir = 0;
-      backEndPlayers[socket.id].ydir = 1;
+        backEndPlayers[socket.id].xdir = 0;
+        backEndPlayers[socket.id].ydir = 1;
         break
 
       case "KeyD":
-      backEndPlayers[socket.id].xdir = 1;
-      backEndPlayers[socket.id].ydir = 0;
+        backEndPlayers[socket.id].xdir = 1;
+        backEndPlayers[socket.id].ydir = 0;
         break
     }
   })
