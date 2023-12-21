@@ -85,9 +85,11 @@ setInterval(() => {
     head[1] += backEndPlayers[id].ydir;
     backEndPlayers[id].body.push(head);
   }
-
-  io.emit("updatePlayers", backEndPlayers)
 }, 120)
+
+setInterval(() => {
+  io.emit("updatePlayers", backEndPlayers)
+}, 15)
 
 server.listen(port, () => {
   console.log(`Multisnake app listening on port ${port}`)

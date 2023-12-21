@@ -3,7 +3,6 @@ class Player {
   constructor({grid, color, body}) {
     this.body = body;
     this.grid = grid;
-    this.len = 1;
     this.color = color;
   }
 
@@ -37,6 +36,5 @@ class Player {
   grow(){
     let temp = this.body[this.body.length-1].copy();
     this.body.push(temp);
-    this.len+=1;
   }
 }

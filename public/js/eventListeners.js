@@ -1,7 +1,7 @@
 //input for changing the player position + other player related functions maybe
 function keyPressed() {
   if(!frontEndPlayers[socket.id]) return;
-  
+
   if (keyCode === LEFT_ARROW || keyCode === 65) {
     socket.emit("keyPressed", "KeyA")
     frontEndPlayers[socket.id].xdir = -1;

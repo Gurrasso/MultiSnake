@@ -51,12 +51,6 @@ socket.on("updatePlayers", (backEndPlayers)=>{
         return
       }
     } else {
-      //move player
-      var head = frontEndPlayers[socket.id].body[frontEndPlayers[socket.id].body.length-1];
-      frontEndPlayers[socket.id].body.shift();
-      head[0] += frontEndPlayers[socket.id].xdir;
-      head[1] += frontEndPlayers[socket.id].ydir;
-      frontEndPlayers[socket.id].body.push(head);
       //if a player already exists
       frontEndPlayers[id].xdir = backEndPlayer.xdir
       frontEndPlayers[id].ydir = backEndPlayer.ydir
@@ -86,3 +80,14 @@ function draw(){
     player.update()
   }
 }
+
+setInterval(() => {
+  for(const id in backEndPlayers){
+    //move player
+    var head = frontEndPlayers[id].body[frontEndPlayers[id].body.length-1];
+    frontEndPlayers[id].body.shift();
+    head[0] += frontEndPlayers[id].xdir;
+    head[1] += frontEndPlayers[id].ydir;
+    frontEndPlayers[id].body.push(head);
+  }
+}, 120)
