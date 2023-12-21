@@ -20,10 +20,17 @@ app.use(express.static('public'))
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html')
 })
+const backEndFood = {}
 //create a backend array of players that have join with all thier info
 const backEndPlayers = {}
 //add new plyers and send thier info to them
 io.on('connection', (socket) => {
+  //object for backEndFood
+  backEndFood[socket.id] = {
+    x: Math.floor(Math.random() * gridSize),
+    y: Math.floor(Math.random() * gridSize)
+  }
+
   console.log('a user connected');
   var x = Math.floor(Math.random() * gridSize);
   var y = Math.floor(Math.random() * gridSize);
@@ -46,6 +53,7 @@ io.on('connection', (socket) => {
   socket.on("disconnect", (reason) =>{
     console.log(reason)
     delete backEndPlayers[socket.id];
+    delete backEndFood[socket.id];
     io.emit("updatePlayers", backEndPlayers)
   })
 
@@ -91,6 +99,7 @@ setInterval(() => {
 
 setInterval(() => {
   io.emit("updatePlayers", backEndPlayers)
+  io.emit("updateFood", backEndFood)
 }, 15)
 
 server.listen(port, () => {

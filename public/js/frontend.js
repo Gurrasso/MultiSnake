@@ -4,6 +4,8 @@ var cnv;
 const frontEndPlayers = {}
 //creates the socket for this frontend
 const socket = io();
+//creates the const for all frontend food
+const frontEndFood = {};
 //creates the canvas
 function centerCanvas() {
   var x = (windowWidth - width) / 2;
@@ -23,7 +25,6 @@ function setup() {
   grid = new Grid(0)
   colorMode(RGB, 255);
 }
-
 //Puts new players into the players obj where we can see thier basic info
 socket.on("updatePlayers", (backEndPlayers)=>{
   for(const id in backEndPlayers){
@@ -94,13 +95,44 @@ socket.on("updatePlayers", (backEndPlayers)=>{
   frontEndPlayers[socket.id].color = color(0, 0, 255)
 })
 
+socket.on("updateFood", (backEndFood)=>{
+  for (const id in backEndFood){
+    if(!frontEndFood[id]){
+      frontEndFood[id] = new Food({
+        grid: grid,
+        x: backEndFood.x,
+        y: backEndFood.y
+      })
+      console.log(frontEndFood)
+    }else {
+      if(id === socket.id){
+        frontEndFood[id].x = backEndFood[id].x;
+        frontEndFood[id].y = backEndFood[id].y;
+      }else{
+        frontEndFood[id].x = backEndFood[id].x;
+        frontEndFood[id].y = backEndFood[id].y;
+      }
+    }
+  }
+  for(const id in frontEndFood){
+    if(!backEndFood[id]){
+      delete frontEndFood[id]
+    }
+  }
+})
+
 function windowResized() {
   centerCanvas();
 }
 
 //does all the things needed every frame
 function draw(){
+  //draws the grid
   drawGrid(grid.grid, grid.size)
+  //draws all the food
+  for(const id in frontEndFood){
+    frontEndFood[id].draw();
+  }
   //draw out all the players
   for(const id in frontEndPlayers){
     const player = frontEndPlayers[id]
