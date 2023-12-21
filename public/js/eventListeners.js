@@ -1,21 +1,32 @@
-//input for changing the player position + other player related functions maybe
+
+const playerInputs = []
+let sequenceNumber = 0
+//input for changing the player position
 function keyPressed() {
   if(!frontEndPlayers[socket.id]) return;
 
   if (keyCode === LEFT_ARROW || keyCode === 65) {
-    socket.emit("keyPressed", "KeyA")
+    sequenceNumber++
+    playerInputs.push({sequenceNumber, dx: -1, dy: 0})
+    socket.emit("keyPressed", {keycode: "KeyA", sequenceNumber})
     frontEndPlayers[socket.id].xdir = -1;
     frontEndPlayers[socket.id].ydir = 0;
   } else if (keyCode === RIGHT_ARROW || keyCode === 68) {
-    socket.emit("keyPressed", "KeyD")
+    sequenceNumber++
+    playerInputs.push({sequenceNumber, dx: 1, dy: 0})
+    socket.emit("keyPressed", {keycode: "KeyD", sequenceNumber})
     frontEndPlayers[socket.id].xdir = 1;
     frontEndPlayers[socket.id].ydir = 0;
   } else if (keyCode === UP_ARROW || keyCode === 87) {
-    socket.emit("keyPressed", "KeyW")
+    sequenceNumber++
+    playerInputs.push({sequenceNumber, dx: 0, dy: -1})
+    socket.emit("keyPressed", {keycode: "KeyW", sequenceNumber})
     frontEndPlayers[socket.id].xdir = 0;
     frontEndPlayers[socket.id].ydir = -1;
   } else if (keyCode === DOWN_ARROW || keyCode === 83) {
-    socket.emit("keyPressed", "KeyS")
+    sequenceNumber++
+    playerInputs.push({sequenceNumber, dx: 0, dy: 1})
+    socket.emit("keyPressed", {keycode: "KeyS", sequenceNumber})
     frontEndPlayers[socket.id].xdir = 0;
     frontEndPlayers[socket.id].ydir = 1;
   }

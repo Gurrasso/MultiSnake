@@ -51,10 +51,38 @@ socket.on("updatePlayers", (backEndPlayers)=>{
         return
       }
     } else {
-      //if a player already exists
-      frontEndPlayers[id].xdir = backEndPlayer.xdir
-      frontEndPlayers[id].ydir = backEndPlayer.ydir
-      frontEndPlayers[id].body = backEndPlayer.body
+      if(id === socket.id){
+        //if a player already exists
+        frontEndPlayers[id].xdir = backEndPlayer.xdir
+        frontEndPlayers[id].ydir = backEndPlayer.ydir
+        frontEndPlayers[id].body = backEndPlayer.body
+        //splicing out all the non needed indexes
+        // const lastBackendInputIndex = playerInputs.findIndex(input => {
+        //   return backEndPlayers.sequenceNumber === input.sequenceNumber
+        // })
+        //
+        // if(lastBackendInputIndex > -1)
+        //   playerInputs.splice(0, lastBackendInputIndex+1);
+        //
+        // playerInputs.forEach(input => {
+        //   frontEndPlayers[id].xdir = input.dx;
+        //   frontEndPlayers[id].ydir = input.dy;
+        // })
+      }else{
+        //for all other players
+        frontEndPlayers[id].xdir = backEndPlayer.xdir
+        frontEndPlayers[id].ydir = backEndPlayer.ydir
+        frontEndPlayers[id].body = backEndPlayer.body
+
+        // for(i = 0; i < frontEndPlayers[id].body.length; i++){
+        //   gsap.to(frontEndPlayers[id].body[i], {
+        //     x: backEndPlayer.body[i].x,
+        //     y: backEndPlayer.body[i].y,
+        //     duration: 0.12,
+        //     ease: "linear"
+        //   })
+        // }
+      }
     }
   }
   //delete disconnected players
@@ -82,12 +110,10 @@ function draw(){
 }
 
 setInterval(() => {
-  for(const id in backEndPlayers){
-    //move player
-    var head = frontEndPlayers[id].body[frontEndPlayers[id].body.length-1];
-    frontEndPlayers[id].body.shift();
-    head[0] += frontEndPlayers[id].xdir;
-    head[1] += frontEndPlayers[id].ydir;
-    frontEndPlayers[id].body.push(head);
-  }
+  // //move player
+  // var head = frontEndPlayers[socket.id].body[frontEndPlayers[socket.id].body.length-1];
+  // frontEndPlayers[socket.id].body.shift();
+  // head[0] += frontEndPlayers[socket.id].xdir;
+  // head[1] += frontEndPlayers[socket.id].ydir;
+  // frontEndPlayers[socket.id].body.push(head);
 }, 120)

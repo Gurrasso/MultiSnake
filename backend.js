@@ -36,7 +36,8 @@ io.on('connection', (socket) => {
     xdir: 0,
     ydir: 0,
     body: [[x, y]],
-    gridSize: gridSize
+    gridSize: gridSize,
+    sequenceNumber: 0
   }
 
   io.emit("updatePlayers", backEndPlayers)
@@ -49,7 +50,8 @@ io.on('connection', (socket) => {
   })
 
   //change direction of player
-  socket.on("keyPressed", (keycode) =>{
+  socket.on("keyPressed", ({keycode, sequenceNumber}) =>{
+    backEndPlayers[socket.id].sequenceNumber = sequenceNumber;
     switch (keycode){
       case "KeyW":
         backEndPlayers[socket.id].xdir = 0;
