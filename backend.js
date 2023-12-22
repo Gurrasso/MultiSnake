@@ -90,11 +90,11 @@ io.on('connection', (socket) => {
 setInterval(() => {
   for(const id in backEndPlayers){
     //move player
-    let head = backEndPlayers[id].body[backEndPlayers[id].body.length-1];
-    backEndPlayers[id].body.shift();
-    head[0] += backEndPlayers[id].xdir;
-    head[1] += backEndPlayers[id].ydir;
-    backEndPlayers[id].body.push(head);
+    let temp = backEndPlayers[id].body[backEndPlayers[id].body.length-1];
+    backEndPlayers[id].body.slice(1);
+    temp[0] += backEndPlayers[id].xdir;
+    temp[1] += backEndPlayers[id].ydir;
+    backEndPlayers[id].body.push(temp);
   }
 }, 120)
 
@@ -105,8 +105,6 @@ setInterval(() => {
       if(backEndPlayers[id].body[backEndPlayers[id].body.length-1][0] == backEndFood[i].x && backEndPlayers[id].body[backEndPlayers[id].body.length-1][1] == backEndFood[i].y){
         //grow player
         let head = backEndPlayers[id].body[backEndPlayers[id].body.length-1];
-        console.log(head)
-        console.log(backEndPlayers[id].body[backEndPlayers[id].body.length-1])
         backEndPlayers[id].len++;
         backEndPlayers[id].body.push(head);
         //remove food and spawn new one

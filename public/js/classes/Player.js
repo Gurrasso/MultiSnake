@@ -3,8 +3,8 @@ class Player {
   constructor({grid, color, body, len}) {
     this.body = body;
     this.grid = grid;
-    this.color = color;
     this.len = len;
+    this.color = color;
   }
 
   //Updates all of the things for the snake
@@ -30,7 +30,6 @@ class Player {
 
   //does the actions needed for the player to die
   die(){
-    //console.log("ded");
     return
   }
 }

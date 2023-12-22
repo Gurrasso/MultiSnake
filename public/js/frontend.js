@@ -138,8 +138,8 @@ function draw(){
   //draw out all the players
   for(const id in frontEndPlayers){
     const player = frontEndPlayers[id]
-    player.draw()
     player.update()
+    player.draw()
   }
 }
 
