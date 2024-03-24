@@ -58,28 +58,36 @@ io.on('connection', (socket) => {
     io.emit("updatePlayers", backEndPlayers)
   })
 
-  //change direction of player
+  //change direction of player, the player also cant change direction to the oppisite of the current direction if the player is larger than 0 length.
   socket.on("keyPressed", ({keycode, sequenceNumber}) =>{
     backEndPlayers[socket.id].sequenceNumber = sequenceNumber;
     switch (keycode){
       case "KeyW":
-        backEndPlayers[socket.id].xdir = 0;
-        backEndPlayers[socket.id].ydir = -1;
+        if(backEndPlayers[socket.id].ydir != 1 || backEndPlayers[socket.id].len < 1){
+          backEndPlayers[socket.id].xdir = 0;
+          backEndPlayers[socket.id].ydir = -1;
+        }
         break
 
       case "KeyA":
-        backEndPlayers[socket.id].xdir = -1;
-        backEndPlayers[socket.id].ydir = 0;
+        if(backEndPlayers[socket.id].xdir != 1 || backEndPlayers[socket.id].len < 1){
+          backEndPlayers[socket.id].xdir = -1;
+          backEndPlayers[socket.id].ydir = 0;
+        }
         break
 
       case "KeyS":
-        backEndPlayers[socket.id].xdir = 0;
-        backEndPlayers[socket.id].ydir = 1;
+        if(backEndPlayers[socket.id].ydir != -1 || backEndPlayers[socket.id].len < 1){
+          backEndPlayers[socket.id].xdir = 0;
+          backEndPlayers[socket.id].ydir = 1;
+        }
         break
 
       case "KeyD":
-        backEndPlayers[socket.id].xdir = 1;
-        backEndPlayers[socket.id].ydir = 0;
+        if(backEndPlayers[socket.id].xdir != -1 || backEndPlayers[socket.id].len < 1){
+          backEndPlayers[socket.id].xdir = 1;
+          backEndPlayers[socket.id].ydir = 0;
+        }
         break
     }
   })
@@ -87,6 +95,7 @@ io.on('connection', (socket) => {
   console.log(backEndPlayers)
 });
 
+//moves the players.
 setInterval(() => {
   for(const id in backEndPlayers){
     //move player
@@ -99,6 +108,57 @@ setInterval(() => {
   }
 }, 120)
 
+//Checks if the player has hit itself or another snake and if so tells them to die().
+setInterval(() => {
+  //check if the player is in itself
+  try{
+    for(const id in backEndPlayers){
+      for(const i in backEndPlayers[id].body){
+        if(i>1){
+          if(backEndPlayers[id].body[0][0] == backEndPlayers[id].body[i][0] && backEndPlayers[id].body[0][1] == backEndPlayers[id].body[i][1]){
+            die(id)
+          }
+        }
+      }
+      //check if the player hits another player
+      for(const j in backEndPlayers){
+        if(backEndPlayers[j] != backEndPlayers[id]){
+          for(const i in backEndPlayers[j].body){
+            if(backEndPlayers[id].body[0][0] == backEndPlayers[j].body[i][0] && backEndPlayers[id].body[0][1] == backEndPlayers[j].body[i][1]){
+              die(id)
+            }
+          }
+        }
+      }
+    }
+  }finally{
+    return;
+  }
+}, 15)
+
+//A function that tells the backend what to do when a player dies.
+function die(id){
+  // delete backEndPlayers[id];
+  // delete backEndFood[id];
+  // io.emit(updatePlayers", backEndPlayers)
+  var x = Math.floor(Math.random() * gridSize);
+  var y = Math.floor(Math.random() * gridSize);
+  backEndPlayers[id] = {
+    x: x,
+    y: y,
+    r: 169,
+    g: 0,
+    b: 255,
+    xdir: 0,
+    ydir: 0,
+    body: [[x, y]],
+    gridSize: gridSize,
+    sequenceNumber: 0,
+    len: 0
+  }
+}
+
+//checks if the player has eaten food and if so they grow the player.
 setInterval(() => {
   for(const id in backEndPlayers){
     //check if player has eaten food
