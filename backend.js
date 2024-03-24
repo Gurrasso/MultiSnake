@@ -90,11 +90,12 @@ io.on('connection', (socket) => {
 setInterval(() => {
   for(const id in backEndPlayers){
     //move player
-    let temp = backEndPlayers[id].body[backEndPlayers[id].body.length-1];
-    backEndPlayers[id].body.slice(1);
-    temp[0] += backEndPlayers[id].xdir;
-    temp[1] += backEndPlayers[id].ydir;
-    backEndPlayers[id].body.push(temp);
+    for(let i = backEndPlayers[id].body.length-2; i >= 0; i--){
+      backEndPlayers[id].body[i+1] = { ...backEndPlayers[id].body[i] }
+    }
+
+    backEndPlayers[id].body[0][0] += backEndPlayers[id].xdir;
+    backEndPlayers[id].body[0][1] += backEndPlayers[id].ydir;
   }
 }, 120)
 
@@ -102,7 +103,7 @@ setInterval(() => {
   for(const id in backEndPlayers){
     //check if player has eaten food
     for(const i in backEndFood){
-      if(backEndPlayers[id].body[backEndPlayers[id].body.length-1][0] == backEndFood[i].x && backEndPlayers[id].body[backEndPlayers[id].body.length-1][1] == backEndFood[i].y){
+      if(backEndPlayers[id].body[0][0] == backEndFood[i].x && backEndPlayers[id].body[0][1] == backEndFood[i].y){
         //grow player
         let head = backEndPlayers[id].body[backEndPlayers[id].body.length-1];
         backEndPlayers[id].len++;
@@ -117,7 +118,7 @@ setInterval(() => {
   }
   io.emit("updatePlayers", backEndPlayers)
   io.emit("updateFood", backEndFood)
-}, 15)
+}, 120)
 
 server.listen(port, () => {
   console.log(`Multisnake app listening on port ${port}`)
