@@ -1,5 +1,7 @@
 //choose the siza of the grid
-const gridSize = 15
+const gridSize = 32;
+//speed var for the speed of the player and the speed of when the dir will change
+const playerSpeed = 120;
 //make an express server thing
 const express = require('express')
 const app = express()
@@ -45,7 +47,8 @@ io.on('connection', (socket) => {
     body: [[x, y]],
     gridSize: gridSize,
     sequenceNumber: 0,
-    len: 0
+    len: 0,
+    moveQueue: []
   }
 
   io.emit("updatePlayers", backEndPlayers)
@@ -58,35 +61,31 @@ io.on('connection', (socket) => {
     io.emit("updatePlayers", backEndPlayers)
   })
 
-  //change direction of player, the player also cant change direction to the oppisite of the current direction if the player is larger than 0 length.
+  //Adds the players moves to a queue. Player also cant move in the oppisite dir och thier current direction.
   socket.on("keyPressed", ({keycode, sequenceNumber}) =>{
     backEndPlayers[socket.id].sequenceNumber = sequenceNumber;
     switch (keycode){
       case "KeyW":
         if(backEndPlayers[socket.id].ydir != 1 || backEndPlayers[socket.id].len < 1){
-          backEndPlayers[socket.id].xdir = 0;
-          backEndPlayers[socket.id].ydir = -1;
+          backEndPlayers[socket.id].moveQueue.push([0, -1]);
         }
         break
 
       case "KeyA":
         if(backEndPlayers[socket.id].xdir != 1 || backEndPlayers[socket.id].len < 1){
-          backEndPlayers[socket.id].xdir = -1;
-          backEndPlayers[socket.id].ydir = 0;
+          backEndPlayers[socket.id].moveQueue.push([-1, 0]);
         }
         break
 
       case "KeyS":
         if(backEndPlayers[socket.id].ydir != -1 || backEndPlayers[socket.id].len < 1){
-          backEndPlayers[socket.id].xdir = 0;
-          backEndPlayers[socket.id].ydir = 1;
+          backEndPlayers[socket.id].moveQueue.push([0, 1]);
         }
         break
 
       case "KeyD":
         if(backEndPlayers[socket.id].xdir != -1 || backEndPlayers[socket.id].len < 1){
-          backEndPlayers[socket.id].xdir = 1;
-          backEndPlayers[socket.id].ydir = 0;
+          backEndPlayers[socket.id].moveQueue.push([1, 0]);
         }
         break
     }
@@ -106,7 +105,24 @@ setInterval(() => {
     backEndPlayers[id].body[0][0] += backEndPlayers[id].xdir;
     backEndPlayers[id].body[0][1] += backEndPlayers[id].ydir;
   }
-}, 120)
+}, playerSpeed)
+
+//changes the dirs of the players with the moveQueue.
+setInterval(() => {
+  for(const id in backEndPlayers){
+    try{
+      if(backEndPlayers[id].moveQueue.length > 0){
+        backEndPlayers[id].xdir = backEndPlayers[id].moveQueue[0][0];
+        backEndPlayers[id].ydir = backEndPlayers[id].moveQueue[0][1];
+        backEndPlayers[id].moveQueue.shift();
+      }else{
+        return;
+      }
+    }finally{
+      return;
+    }
+  }
+}, playerSpeed)
 
 //Checks if the player has hit itself or another snake and if so tells them to die().
 setInterval(() => {
@@ -136,6 +152,19 @@ setInterval(() => {
   }
 }, 15)
 
+//checks if a player has gone out of bounds and if so tells them to die().
+setInterval(() => {
+  try{
+    for(const id in backEndPlayers){
+      if(backEndPlayers[id].body[0][0] >= backEndPlayers[id].gridSize || backEndPlayers[id].body[0][1] == backEndPlayers[id].gridSize || backEndPlayers[id].body[0][1] < 0 || backEndPlayers[id].body[0][0] < 0){
+        die(id)
+      }
+    }
+  }finally{
+    return;
+  }
+}, 15)
+
 //A function that tells the backend what to do when a player dies.
 function die(id){
   // delete backEndPlayers[id];
@@ -154,7 +183,8 @@ function die(id){
     body: [[x, y]],
     gridSize: gridSize,
     sequenceNumber: 0,
-    len: 0
+    len: 0,
+    moveQueue: []
   }
 }
 

@@ -97,6 +97,7 @@ socket.on("updatePlayers", (backEndPlayers)=>{
   }
   frontEndPlayers[socket.id].color = color(0, 0, 255)
 })
+
 //update the food.
 socket.on("updateFood", (backEndFood)=>{
   for (const id in backEndFood){
