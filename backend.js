@@ -1,5 +1,7 @@
 //choose the siza of the grid
 const gridSize = 32;
+//maximum length of the players moveQueue
+const moveQueueLength = 2;
 //speed var for the speed of the player and the speed of when the dir will change
 const playerSpeed = 120;
 //make an express server thing
@@ -61,36 +63,29 @@ io.on('connection', (socket) => {
     io.emit("updatePlayers", backEndPlayers)
   })
 
-  //Adds the players moves to a queue. Player also cant move in the oppisite dir och thier current direction.
-  socket.on("keyPressed", ({keycode, sequenceNumber}) =>{
-    backEndPlayers[socket.id].sequenceNumber = sequenceNumber;
-    switch (keycode){
-      case "KeyW":
-        if(backEndPlayers[socket.id].ydir != 1 || backEndPlayers[socket.id].len < 1){
+  //Adds the players moves to a queue with a max length of moveQueueLength. Player also cant move in the oppisite dir och thier current direction.
+  if(backEndPlayers[socket.id].moveQueue.length < moveQueueLength){
+    socket.on("keyPressed", ({keycode, sequenceNumber}) =>{
+      backEndPlayers[socket.id].sequenceNumber = sequenceNumber;
+      switch (keycode){
+        case "KeyW":
           backEndPlayers[socket.id].moveQueue.push([0, -1]);
-        }
-        break
+          break
 
-      case "KeyA":
-        if(backEndPlayers[socket.id].xdir != 1 || backEndPlayers[socket.id].len < 1){
+        case "KeyA":
           backEndPlayers[socket.id].moveQueue.push([-1, 0]);
-        }
-        break
+          break
 
-      case "KeyS":
-        if(backEndPlayers[socket.id].ydir != -1 || backEndPlayers[socket.id].len < 1){
+        case "KeyS":
           backEndPlayers[socket.id].moveQueue.push([0, 1]);
-        }
-        break
+          break
 
-      case "KeyD":
-        if(backEndPlayers[socket.id].xdir != -1 || backEndPlayers[socket.id].len < 1){
+        case "KeyD":
           backEndPlayers[socket.id].moveQueue.push([1, 0]);
-        }
-        break
-    }
-  })
-
+          break
+      }
+    })
+  }
   console.log(backEndPlayers)
 });
 
@@ -111,6 +106,15 @@ setInterval(() => {
 setInterval(() => {
   for(const id in backEndPlayers){
     try{
+      for(i = 0; i < backEndPlayers[id].moveQueue.length; i++){
+        if(backEndPlayers[id].moveQueue[0][0]*-1 == backEndPlayers[id].xdir || backEndPlayers[id].moveQueue[0][1]*-1 == backEndPlayers[id].ydir){
+          if(backEndPlayers[id].len > 0){
+            backEndPlayers[id].moveQueue.shift();
+          }
+        }else{
+          break;
+        }
+      }
       if(backEndPlayers[id].moveQueue.length > 0){
         backEndPlayers[id].xdir = backEndPlayers[id].moveQueue[0][0];
         backEndPlayers[id].ydir = backEndPlayers[id].moveQueue[0][1];
