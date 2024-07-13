@@ -104,8 +104,8 @@ setInterval(() => {
 
 //changes the dirs of the players with the moveQueue.
 setInterval(() => {
-  for(const id in backEndPlayers){
-    try{
+  try{
+    for(const id in backEndPlayers){
       for(i = 0; i < backEndPlayers[id].moveQueue.length; i++){
         if(backEndPlayers[id].moveQueue[0][0]*-1 == backEndPlayers[id].xdir || backEndPlayers[id].moveQueue[0][1]*-1 == backEndPlayers[id].ydir){
           if(backEndPlayers[id].len > 0){
@@ -119,12 +119,10 @@ setInterval(() => {
         backEndPlayers[id].xdir = backEndPlayers[id].moveQueue[0][0];
         backEndPlayers[id].ydir = backEndPlayers[id].moveQueue[0][1];
         backEndPlayers[id].moveQueue.shift();
-      }else{
-        return;
       }
-    }finally{
-      return;
     }
+  } finally{
+    return;
   }
 }, playerSpeed)
 
