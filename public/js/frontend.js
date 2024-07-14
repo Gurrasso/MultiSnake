@@ -45,7 +45,8 @@ socket.on("updatePlayers", (backEndPlayers)=>{
           xdir: backEndPlayer.xdir,
           ydir: backEndPlayer.ydir,
           body: backEndPlayer.body,
-          len: backEndPlayer.len
+          len: backEndPlayer.len,
+          joined: backEndPlayer.joined
         });
         //give the player an x and y
         frontEndPlayers[id].body[0] =[backEndPlayer.x, backEndPlayer.y]
@@ -59,6 +60,7 @@ socket.on("updatePlayers", (backEndPlayers)=>{
         frontEndPlayers[id].ydir = backEndPlayer.ydir
         frontEndPlayers[id].body = backEndPlayer.body
         frontEndPlayers[id].len = backEndPlayer.len
+        frontEndPlayers[id].joined = backEndPlayer.joined
         //splicing out all the non needed indexes
         // const lastBackendInputIndex = playerInputs.findIndex(input => {
         //   return backEndPlayers.sequenceNumber === input.sequenceNumber
@@ -77,6 +79,7 @@ socket.on("updatePlayers", (backEndPlayers)=>{
         frontEndPlayers[id].ydir = backEndPlayer.ydir
         frontEndPlayers[id].body = backEndPlayer.body
         frontEndPlayers[id].len = backEndPlayer.len
+        frontEndPlayers[id].joined = backEndPlayer.joined
 
         // for(i = 0; i < frontEndPlayers[id].body.length; i++){
         //   gsap.to(frontEndPlayers[id].body[i], {
@@ -142,6 +145,8 @@ function draw(){
     player.update()
     player.draw()
   }
+  //draws main Menu
+  drawMenu();
 }
 
 setInterval(() => {

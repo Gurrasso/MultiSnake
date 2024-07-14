@@ -50,7 +50,8 @@ io.on('connection', (socket) => {
     gridSize: gridSize,
     sequenceNumber: 0,
     len: 0,
-    moveQueue: []
+    moveQueue: [],
+    joined: false
   }
 
   io.emit("updatePlayers", backEndPlayers)
@@ -63,25 +64,43 @@ io.on('connection', (socket) => {
     io.emit("updatePlayers", backEndPlayers)
   })
 
+  //checks if a player has asked to join the lobby.
+  socket.on("joined", ({lobby}) =>{
+    backEndPlayers[socket.id].joined = true;
+    io.emit("updatePlayers", backEndPlayers)
+  })
+
   //Adds the players moves to a queue with a max length of moveQueueLength. Player also cant move in the oppisite dir och thier current direction.
   if(backEndPlayers[socket.id].moveQueue.length < moveQueueLength){
     socket.on("keyPressed", ({keycode, sequenceNumber}) =>{
       backEndPlayers[socket.id].sequenceNumber = sequenceNumber;
       switch (keycode){
         case "KeyW":
-          backEndPlayers[socket.id].moveQueue.push([0, -1]);
+          //checks if player has joined the lobby
+          if(backEndPlayers[socket.id].joined == true){
+            backEndPlayers[socket.id].moveQueue.push([0, -1]);
+          }
           break
 
         case "KeyA":
-          backEndPlayers[socket.id].moveQueue.push([-1, 0]);
+          //checks if player has joined the lobby
+          if(backEndPlayers[socket.id].joined == true){
+            backEndPlayers[socket.id].moveQueue.push([-1, 0]);
+          }
           break
 
         case "KeyS":
-          backEndPlayers[socket.id].moveQueue.push([0, 1]);
+          //checks if player has joined the lobby
+          if(backEndPlayers[socket.id].joined == true){
+            backEndPlayers[socket.id].moveQueue.push([0, 1]);
+          }
           break
 
         case "KeyD":
-          backEndPlayers[socket.id].moveQueue.push([1, 0]);
+          //checks if player has joined the lobby
+          if(backEndPlayers[socket.id].joined == true){
+            backEndPlayers[socket.id].moveQueue.push([1, 0]);
+          }
           break
       }
     })
@@ -131,19 +150,21 @@ setInterval(() => {
   //check if the player is in itself
   try{
     for(const id in backEndPlayers){
-      for(const i in backEndPlayers[id].body){
-        if(i>1){
-          if(backEndPlayers[id].body[0][0] == backEndPlayers[id].body[i][0] && backEndPlayers[id].body[0][1] == backEndPlayers[id].body[i][1]){
-            die(id)
+      if(backEndPlayers[id].joined == true){
+        for(const i in backEndPlayers[id].body){
+          if(i>1){
+            if(backEndPlayers[id].body[0][0] == backEndPlayers[id].body[i][0] && backEndPlayers[id].body[0][1] == backEndPlayers[id].body[i][1]){
+              die(id)
+            }
           }
         }
-      }
-      //check if the player hits another player
-      for(const j in backEndPlayers){
-        if(backEndPlayers[j] != backEndPlayers[id]){
-          for(const i in backEndPlayers[j].body){
-            if(backEndPlayers[id].body[0][0] == backEndPlayers[j].body[i][0] && backEndPlayers[id].body[0][1] == backEndPlayers[j].body[i][1]){
-              die(id)
+        //check if the player hits another player
+        for(const j in backEndPlayers){
+          if(backEndPlayers[j] != backEndPlayers[id]){
+            for(const i in backEndPlayers[j].body){
+              if(backEndPlayers[id].body[0][0] == backEndPlayers[j].body[i][0] && backEndPlayers[id].body[0][1] == backEndPlayers[j].body[i][1]){
+                die(id)
+              }
             }
           }
         }
@@ -158,8 +179,10 @@ setInterval(() => {
 setInterval(() => {
   try{
     for(const id in backEndPlayers){
-      if(backEndPlayers[id].body[0][0] >= backEndPlayers[id].gridSize || backEndPlayers[id].body[0][1] == backEndPlayers[id].gridSize || backEndPlayers[id].body[0][1] < 0 || backEndPlayers[id].body[0][0] < 0){
-        die(id)
+      if(backEndPlayers[id].joined == true){
+        if(backEndPlayers[id].body[0][0] >= backEndPlayers[id].gridSize || backEndPlayers[id].body[0][1] == backEndPlayers[id].gridSize || backEndPlayers[id].body[0][1] < 0 || backEndPlayers[id].body[0][0] < 0){
+          die(id)
+        }
       }
     }
   }finally{

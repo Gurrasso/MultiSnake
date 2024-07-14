@@ -1,7 +1,7 @@
 
 const playerInputs = []
 let sequenceNumber = 0
-//input for changing the player position
+//input for changing the player position + joining a lobby
 function keyPressed() {
   if(!frontEndPlayers[socket.id]) return;
 
@@ -29,5 +29,8 @@ function keyPressed() {
     socket.emit("keyPressed", {keycode: "KeyS", sequenceNumber})
     frontEndPlayers[socket.id].xdir = 0;
     frontEndPlayers[socket.id].ydir = 1;
+  } else if (keyCode === 32) {
+    //checks if player has pressed space and if so joins the lobby
+    socket.emit("joined", {lobby: 0})
   }
 }

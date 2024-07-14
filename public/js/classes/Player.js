@@ -1,10 +1,11 @@
 //A player class with different vals
 class Player {
-  constructor({grid, color, body, len}) {
+  constructor({grid, color, body, len, joined}) {
     this.body = body;
     this.grid = grid;
     this.len = len;
     this.color = color;
+    this.joined = joined;
   }
 
   //Updates all of the things for the snake
@@ -22,9 +23,11 @@ class Player {
   }
   //draws the Player
   draw(){
-    fill(this.color);
-    for (let i = 0; i < this.body.length; i++) {
-      rect((width/grid.size)*this.body[i][0], (height/grid.size)*this.body[i][1], height/grid.size);
+    if(this.joined == true){
+      fill(this.color);
+      for (let i = 0; i < this.body.length; i++) {
+        rect((width/grid.size)*this.body[i][0], (height/grid.size)*this.body[i][1], height/grid.size);
+      }
     }
   }
 
