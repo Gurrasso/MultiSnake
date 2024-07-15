@@ -1,11 +1,12 @@
 //A player class with different vals
 class Player {
-  constructor({grid, color, body, len, joined}) {
+  constructor({grid, color, body, len, joined, username}) {
     this.body = body;
     this.grid = grid;
     this.len = len;
     this.color = color;
     this.joined = joined;
+    this.username = username;
   }
 
   //Updates all of the things for the snake
@@ -28,6 +29,28 @@ class Player {
       for (let i = 0; i < this.body.length; i++) {
         rect((width/grid.size)*this.body[i][0], (height/grid.size)*this.body[i][1], height/grid.size);
       }
+    }
+  }
+
+  //draws username over players
+  drawUsernames(){
+    if(this.joined == true){
+      push();
+      textAlign(CENTER, CENTER);
+      textStyle(BOLD);
+      fill(60, 60, 60);
+
+      //text in body
+      // textSize(width/grid.size);
+      // for (let i = 0; i < this.body.length; i++) {
+      //   text(this.username[i], (width/grid.size)*this.body[i][0]+((width/grid.size)/2), (height/grid.size)*this.body[i][1]+((height/grid.size)/2));
+      // }
+
+      //text above head
+      textSize((width/grid.size)/2);
+      text(this.username, ((width/grid.size)*this.body[0][0])+(width/grid.size/2), (((height/grid.size)*this.body[0][1])+(height/grid.size/2))-((height/grid.size)/1.3));
+
+      pop();
     }
   }
 

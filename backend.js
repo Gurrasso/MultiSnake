@@ -51,7 +51,8 @@ io.on('connection', (socket) => {
     sequenceNumber: 0,
     len: 0,
     moveQueue: [],
-    joined: false
+    joined: false,
+    username: ""
   }
 
   io.emit("updatePlayers", backEndPlayers)
@@ -65,8 +66,9 @@ io.on('connection', (socket) => {
   })
 
   //checks if a player has asked to join the lobby.
-  socket.on("joined", ({lobby}) =>{
+  socket.on("joined", ({lobby, username}) =>{
     backEndPlayers[socket.id].joined = true;
+    backEndPlayers[socket.id].username = username;
     io.emit("updatePlayers", backEndPlayers)
   })
 
@@ -209,7 +211,8 @@ function die(id){
     gridSize: gridSize,
     sequenceNumber: 0,
     len: 0,
-    moveQueue: []
+    moveQueue: [],
+    joined: false
   }
 }
 

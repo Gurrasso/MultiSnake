@@ -31,6 +31,6 @@ function keyPressed() {
     frontEndPlayers[socket.id].ydir = 1;
   } else if (keyCode === 32) {
     //checks if player has pressed space and if so joins the lobby
-    socket.emit("joined", {lobby: 0})
+    joinLobby();
   }
 }

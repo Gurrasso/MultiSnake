@@ -24,6 +24,13 @@ function setup() {
   centerCanvas();
   grid = new Grid(0)
   colorMode(RGB, 255);
+
+  noStroke
+  input = createInput();
+  fill(0, 0, 0)
+  input.attribute('placeholder', 'Username(max ' + maxUsernameLength + " characters)")
+  input.size(width/3, height/25)
+  input.position(windowWidth/2-(width/3)/2, height/2.4)
 }
 //Puts new players into the players obj where we can see thier basic info
 socket.on("updatePlayers", (backEndPlayers)=>{
@@ -61,6 +68,7 @@ socket.on("updatePlayers", (backEndPlayers)=>{
         frontEndPlayers[id].body = backEndPlayer.body
         frontEndPlayers[id].len = backEndPlayer.len
         frontEndPlayers[id].joined = backEndPlayer.joined
+        frontEndPlayers[id].username = backEndPlayer.username
         //splicing out all the non needed indexes
         // const lastBackendInputIndex = playerInputs.findIndex(input => {
         //   return backEndPlayers.sequenceNumber === input.sequenceNumber
@@ -80,6 +88,7 @@ socket.on("updatePlayers", (backEndPlayers)=>{
         frontEndPlayers[id].body = backEndPlayer.body
         frontEndPlayers[id].len = backEndPlayer.len
         frontEndPlayers[id].joined = backEndPlayer.joined
+        frontEndPlayers[id].username = backEndPlayer.username
 
         // for(i = 0; i < frontEndPlayers[id].body.length; i++){
         //   gsap.to(frontEndPlayers[id].body[i], {
@@ -142,8 +151,9 @@ function draw(){
   //draw out all the players
   for(const id in frontEndPlayers){
     const player = frontEndPlayers[id]
-    player.update()
-    player.draw()
+    player.update();
+    player.draw();
+    player.drawUsernames();
   }
   //draws main Menu
   drawMenu();
