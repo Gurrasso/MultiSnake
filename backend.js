@@ -14,7 +14,6 @@ const { Server } = require('socket.io');
 const io = new Server(server, {pingInterval: 2000,
   pingTimeout: 4000});
 
-move = false;
 
 //specify the computer port it will be broadcasted from
 const port = 3000

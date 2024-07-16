@@ -1,5 +1,10 @@
 var input;
+//max username length
 const maxUsernameLength = 10;
+//terms that usernames cant include
+const bannedUsernameTerms = []
+//default name for users if they dont write a username
+const defaultName = "User"
 
 //function for drawing the menu
 function drawMenu(){
@@ -46,7 +51,14 @@ function joinLobby(){
       username = input.value();
     }
   } else{
-    username = "User";
+    username = defaultName;
   }
+
+  for(i = 0; i < bannedUsernameTerms.length; i++){
+    if(username.toLowerCase().includes(bannedUsernameTerms[i].toLowerCase())){
+      username = defaultName;
+    }
+  }
+
   socket.emit("joined", {lobby: 0, username: username});
 }

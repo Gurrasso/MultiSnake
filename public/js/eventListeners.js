@@ -29,8 +29,8 @@ function keyPressed() {
     socket.emit("keyPressed", {keycode: "KeyS", sequenceNumber})
     frontEndPlayers[socket.id].xdir = 0;
     frontEndPlayers[socket.id].ydir = 1;
-  } else if (keyCode === 32) {
-    //checks if player has pressed space and if so joins the lobby
+  } else if (keyCode === 32 || keyCode === 13) {
+    //checks if player has pressed space or enter and if so joins the lobby
     joinLobby();
   }
 }
