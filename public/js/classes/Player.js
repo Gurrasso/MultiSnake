@@ -48,7 +48,7 @@ class Player {
 
       //text above head
       textSize((width/grid.size)/2);
-      text(this.username, ((width/grid.size)*this.body[0][0])+(width/grid.size/2), (((height/grid.size)*this.body[0][1])+(height/grid.size/2))-((height/grid.size)/1.3));
+      text(this.username, ((width/grid.size)*this.body[0][0])+(width/this.grid.size/2), (((height/this.grid.size)*this.body[0][1])+(height/this.grid.size/2))-((height/grid.size)/1.3));
 
       pop();
     }
