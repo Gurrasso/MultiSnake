@@ -6,7 +6,7 @@ const bannedUsernameTerms = []
 //default name for users if they dont write a username
 const defaultName = "User"
 //delay for joining the lobby
-const joinDelay = 200;
+const joinDelay = 70;
 //var for the playButton
 let playButton;
 //all the textures get names here:
@@ -31,37 +31,11 @@ function drawMenu(){
     input.show()
   }
 
+  //draws the play button
   push();
   imageMode(CENTER);
   image(playButton, width/2, height/3, width/3, width/3);
   pop();
-}
-
-//checks if player has pressed on the join button
-function mousePressed(){
-  //checks if there is a player and if the player has not joined a lobby
-  if(!frontEndPlayers[socket.id]){return;}
-  if(frontEndPlayers[socket.id].joined == true){return;}
-
-  if(mouseX > ((width/2)-((width/3)/2)) && mouseX < ((width/2)+((width/3)/2)) && mouseY > ((height/3)-(((width/3)/3)/2)) && mouseY < ((height/3)+(((width/3)/3)/2))){
-    //changes the button sprite to the down verison.
-    playButton = playButtonDownSprite;
-    playButtonDownSound.play();
-  }
-}
-
-//checks if player has released on the join button
-function mouseReleased(){
-  //checks if there is a player and if the player has not joined a lobby
-  if(!frontEndPlayers[socket.id]){return;}
-  if(frontEndPlayers[socket.id].joined == true){return;}
-
-  if(mouseX > ((width/2)-((width/3)/2)) && mouseX < ((width/2)+((width/3)/2)) && mouseY > ((height/3)-(((width/3)/3)/2)) && mouseY < ((height/3)+(((width/3)/3)/2))){
-    //changes the button sprite to the up verison.
-    playButton = playButtonUpSprite;
-    playButtonUpSound.play();
-    joinLobby();
-  }
 }
 
 //function for joining the lobby with a username

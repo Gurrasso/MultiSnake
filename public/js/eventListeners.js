@@ -30,7 +30,46 @@ function keyPressed() {
     frontEndPlayers[socket.id].xdir = 0;
     frontEndPlayers[socket.id].ydir = 1;
   } else if (keyCode === 32 || keyCode === 13) {
-    //checks if player has pressed space or enter and if so joins the lobby
+    //checks if player has pressed space or enter and if so changes the button sprite to the down verison.
+    playButton = playButtonDownSprite;
+    playButtonDownSound.play();
+  }
+}
+
+function keyReleased() {
+  if(!frontEndPlayers[socket.id]) return;
+
+  if (keyCode === 32 || keyCode === 13) {
+    //checks if player has released space or enter and if so changes the button sprite to the up verison and joins.
+    playButton = playButtonUpSprite;
+    playButtonUpSound.play();
+    joinLobby();
+  }
+}
+
+//checks if player has pressed on the join button
+function mousePressed(){
+  //checks if there is a player and if the player has not joined a lobby
+  if(!frontEndPlayers[socket.id]){return;}
+  if(frontEndPlayers[socket.id].joined == true){return;}
+
+  if(mouseX > ((width/2)-((width/3)/2)) && mouseX < ((width/2)+((width/3)/2)) && mouseY > ((height/3)-(((width/3)/3)/2)) && mouseY < ((height/3)+(((width/3)/3)/2))){
+    //changes the button sprite to the down verison.
+    playButton = playButtonDownSprite;
+    playButtonDownSound.play();
+  }
+}
+
+//checks if player has released on the join button
+function mouseReleased(){
+  //checks if there is a player and if the player has not joined a lobby
+  if(!frontEndPlayers[socket.id]){return;}
+  if(frontEndPlayers[socket.id].joined == true){return;}
+
+  if(mouseX > ((width/2)-((width/3)/2)) && mouseX < ((width/2)+((width/3)/2)) && mouseY > ((height/3)-(((width/3)/3)/2)) && mouseY < ((height/3)+(((width/3)/3)/2))){
+    //changes the button sprite to the up verison and joins.
+    playButton = playButtonUpSprite;
+    playButtonUpSound.play();
     joinLobby();
   }
 }
