@@ -53,7 +53,7 @@ function mousePressed(){
   if(!frontEndPlayers[socket.id]){return;}
   if(frontEndPlayers[socket.id].joined == true){return;}
 
-  if(mouseX > ((width/2)-((width/3)/2)) && mouseX < ((width/2)+((width/3)/2)) && mouseY > ((height/3)-(((width/3)/3)/2)) && mouseY < ((height/3)+(((width/3)/3)/2))){
+  if(mouseX > ((playButtonX)-((playButtonSize)/2)) && mouseX < ((playButtonX)+((playButtonSize)/2)) && mouseY > ((playButtonY)-(((playButtonSize)/2)/2)) && mouseY < ((playButtonY)+(((playButtonSize)/3)/2))){
     //changes the button sprite to the down verison.
     playButton = playButtonDownSprite;
     playButtonDownSound.play();
@@ -66,7 +66,7 @@ function mouseReleased(){
   if(!frontEndPlayers[socket.id]){return;}
   if(frontEndPlayers[socket.id].joined == true){return;}
 
-  if(mouseX > ((width/2)-((width/3)/2)) && mouseX < ((width/2)+((width/3)/2)) && mouseY > ((height/3)-(((width/3)/3)/2)) && mouseY < ((height/3)+(((width/3)/3)/2))){
+  if(mouseX > ((playButtonX)-((playButtonSize)/2)) && mouseX < ((playButtonX)+((playButtonSize)/2)) && mouseY > ((playButtonY)-(((playButtonSize)/2)/2)) && mouseY < ((playButtonY)+(((playButtonSize)/3)/2))){
     //changes the button sprite to the up verison and joins.
     playButton = playButtonUpSprite;
     playButtonUpSound.play();

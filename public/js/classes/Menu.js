@@ -5,14 +5,22 @@ const maxUsernameLength = 10;
 const bannedUsernameTerms = []
 //default name for users if they dont write a username
 const defaultName = "User"
+//ypos for the username input box
+const inputY=2
 //delay for joining the lobby
 const joinDelay = 70;
 //var for the playButton
 let playButton;
-//all the textures get names here:
+let playButtonX;
+let playButtonY;
+let playButtonSize;
+//all the menu textures get names here:
 let playButtonDownSprite;
 let playButtonUpSprite;
-//all the sounds get names here:
+let logoLandScapeSheet;
+//sprite sheets
+let logoLandScape;
+//all the menu sounds here:
 var playButtonDownSound = new Howl({
       src: ['./assets/sounds/buttonDown.mp3']
 });
@@ -34,8 +42,10 @@ function drawMenu(){
   //draws the play button
   push();
   imageMode(CENTER);
-  image(playButton, width/2, height/3, width/3, width/3);
+  image(playButton, playButtonX, playButtonY, playButtonSize, playButtonSize);
   pop();
+  //draws the logo
+  logoLandScape.draw();
 }
 
 //function for joining the lobby with a username

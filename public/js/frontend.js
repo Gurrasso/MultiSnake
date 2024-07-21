@@ -29,12 +29,20 @@ function setup() {
   input = createInput();
   input.attribute('placeholder', 'Username(max ' + maxUsernameLength + " characters)")
   input.size(width/3, height/25)
-  input.position(windowWidth/2-(width/3)/2, height/2.4)
+  input.position(windowWidth/2-(width/3)/2, height/inputY)
+
+  //vars for playButtons position
+  playButtonX = width/2
+  playButtonY = height/2.3
+  playButtonSize = width/3
 
   //load all assets
   playButtonUpSprite = loadImage("./assets/sprites/playButtonUp.png");
   playButtonDownSprite = loadImage("./assets/sprites/playButtonDown.png");
   playButton = playButtonUpSprite;
+  logoLandScapeSheet = loadImage("./assets/sprites/logoLandScape-Sheet.png");
+  //create new animation for sprite sheets
+  logoLandScape = new Sprite(logoLandScapeSheet, width/2+(width/64), height/6, width, 50, 0.2, 32000, 320)
 }
 //Puts new players into the players obj where we can see thier basic info
 socket.on("updatePlayers", (backEndPlayers)=>{
@@ -162,7 +170,7 @@ function draw(){
   //draws main Menu
   drawMenu();
   //update pos of username input box
-  input.position(windowWidth/2-(width/3)/2, height/2.4)
+  input.position(windowWidth/2-(width/3)/2, height/inputY)
 }
 
 setInterval(() => {
