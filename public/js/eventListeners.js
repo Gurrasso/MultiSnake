@@ -29,7 +29,7 @@ function keyPressed() {
     socket.emit("keyPressed", {keycode: "KeyS", sequenceNumber})
     frontEndPlayers[socket.id].xdir = 0;
     frontEndPlayers[socket.id].ydir = 1;
-  } else if (keyCode === 32 || keyCode === 13) {
+  } else if (keyCode === 13) {
     //checks if player has pressed space or enter and if so changes the button sprite to the down verison.
     playButton = playButtonDownSprite;
     playButtonDownSound.play();
@@ -39,7 +39,7 @@ function keyPressed() {
 function keyReleased() {
   if(!frontEndPlayers[socket.id]) return;
 
-  if (keyCode === 32 || keyCode === 13) {
+  if (keyCode === 13) {
     //checks if player has released space or enter and if so changes the button sprite to the up verison and joins.
     playButton = playButtonUpSprite;
     playButtonUpSound.play();
