@@ -4,7 +4,7 @@ const maxUsernameLength = 10;
 //terms that usernames cant include
 const bannedUsernameTerms = []
 //default name for users if they dont write a username
-const defaultName = "User"
+const defaultName = "guest"
 //ypos for the username input box
 const inputY=2
 //delay for joining the lobby

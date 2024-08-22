@@ -8,6 +8,6 @@ class  Food {
   //draws food on to the screen
   draw(){
     fill(255, 0, 0);
-    rect((width/grid.size)*this.x, (height/grid.size)*this.y, height/grid.size);
+    rect((gameWidth/grid.size)*this.x, (gameHeight/grid.size)*this.y, gameHeight/grid.size);
   }
 }

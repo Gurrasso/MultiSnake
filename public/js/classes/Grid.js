@@ -25,11 +25,11 @@ function drawGrid(grid, gs){
       if((i+j) % 2 == 0){
         fill(0, 150, 9);
         noStroke();
-        rect((width/gs) * grid[i][j], (height/gs) * i, width/gs);
+        rect((gameWidth/gs) * grid[i][j], (gameHeight/gs) * i, gameWidth/gs);
       }else {
         fill(0, 200, 0);
         noStroke();
-        rect((width/gs) * grid[i][j], (height/gs) * i, width/gs);
+        rect((gameWidth/gs) * grid[i][j], (gameHeight/gs) * i, gameWidth/gs);
       }
     }
   }

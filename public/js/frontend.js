@@ -1,6 +1,11 @@
 var cnv;
 
-//create vars for fotns
+//offset for the border
+let offset;
+//playing space
+let gameWidth;
+let gameHeight;
+//create vars for fonts
 let FFFFORWA;
 //creates the const for all frontend players
 const frontEndPlayers = {}
@@ -14,7 +19,6 @@ function centerCanvas() {
   var y = (windowHeight - height) / 2;
   cnv.position(x, y);
 }
-
 //does all the nesessary things for setting up the game
 function setup() {
   if(windowWidth < windowHeight){
@@ -46,6 +50,12 @@ function setup() {
   FFFFORWA = loadFont("./assets/fonts/FFFFORWA.TTF");
   //create new animation for sprite sheets
   logoLandScape = new Sprite(logoLandScapeSheet, width/2+(width/64), height/6, width, 50, 0.2, 6400, 64)
+
+  //define offset
+  offset = windowHeight/20;
+  //define game area
+  gameWidth = width-offset*2;
+  gameHeight = height-offset*2;
 }
 //Puts new players into the players obj where we can see thier basic info
 socket.on("updatePlayers", (backEndPlayers)=>{
@@ -157,6 +167,11 @@ function windowResized() {
 
 //does all the things needed every frame
 function draw(){
+  //draw the border around the screen
+  border("#1BB0DB")
+  push();
+  //offsets the playing area
+  translate(offset, offset)
   //draws the grid
   drawGrid(grid.grid, grid.size)
   //draws all the food
@@ -170,17 +185,23 @@ function draw(){
     player.draw();
     player.drawUsernames();
   }
+  pop();
   //draws main Menu
   drawMenu();
   //update pos of username input box
   input.position(windowWidth/2-(width/3)/2, height/inputY)
 }
 
-setInterval(() => {
-  // //move player
-  // var head = frontEndPlayers[socket.id].body[frontEndPlayers[socket.id].body.length-1];
-  // frontEndPlayers[socket.id].body.shift();
-  // head[0] += frontEndPlayers[socket.id].xdir;
-  // head[1] += frontEndPlayers[socket.id].ydir;
-  // frontEndPlayers[socket.id].body.push(head);
-}, 120)
+//draws a border around the playing area
+function border(color){
+  background(color);
+}
+
+// setInterval(() => {
+//   // //move player
+//   // var head = frontEndPlayers[socket.id].body[frontEndPlayers[socket.id].body.length-1];
+//   // frontEndPlayers[socket.id].body.shift();
+//   // head[0] += frontEndPlayers[socket.id].xdir;
+//   // head[1] += frontEndPlayers[socket.id].ydir;
+//   // frontEndPlayers[socket.id].body.push(head);
+// }, 120)

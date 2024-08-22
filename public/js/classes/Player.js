@@ -27,7 +27,7 @@ class Player {
     if(this.joined == true){
       fill(this.color);
       for (let i = 0; i < this.body.length; i++) {
-        rect((width/grid.size)*this.body[i][0], (height/grid.size)*this.body[i][1], height/grid.size);
+        rect((gameWidth/grid.size)*this.body[i][0], (gameHeight/grid.size)*this.body[i][1], gameHeight/grid.size);
       }
     }
   }
@@ -41,15 +41,15 @@ class Player {
       fill(60, 60, 60);
 
       // text in body
-      // textSize(width/grid.size);
+      // textSize(gameWidth/grid.size);
       // for (let i = 0; i < this.body.length; i++) {
-      //   text(this.username[i], (width/grid.size)*this.body[i][0]+((width/grid.size)/2), (height/grid.size)*this.body[i][1]+((height/grid.size)/2));
+      //   text(this.username[i], (gameWidth/grid.size)*this.body[i][0]+((gameWidth/grid.size)/2), (gameHeight/grid.size)*this.body[i][1]+((gameHeight/grid.size)/2));
       // }
 
       //text above head
       textFont(FFFFORWA);
-      textSize((width/grid.size)/2.5);
-      text(this.username, ((width/grid.size)*this.body[0][0])+(width/this.grid.size/2), (((height/this.grid.size)*this.body[0][1])+(height/this.grid.size/2))-((height/grid.size)/1.3));
+      textSize((gameWidth/grid.size)/2.5);
+      text(this.username, ((gameWidth/grid.size)*this.body[0][0])+(gameWidth/this.grid.size/2), (((gameHeight/this.grid.size)*this.body[0][1])+(gameHeight/this.grid.size/2))-((gameHeight/grid.size)/1.3));
 
       pop();
     }
