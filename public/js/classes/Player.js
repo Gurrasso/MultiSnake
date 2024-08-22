@@ -40,14 +40,15 @@ class Player {
       textStyle(BOLD);
       fill(60, 60, 60);
 
-      //text in body
+      // text in body
       // textSize(width/grid.size);
       // for (let i = 0; i < this.body.length; i++) {
       //   text(this.username[i], (width/grid.size)*this.body[i][0]+((width/grid.size)/2), (height/grid.size)*this.body[i][1]+((height/grid.size)/2));
       // }
 
       //text above head
-      textSize((width/grid.size)/2);
+      textFont(FFFFORWA);
+      textSize((width/grid.size)/2.5);
       text(this.username, ((width/grid.size)*this.body[0][0])+(width/this.grid.size/2), (((height/this.grid.size)*this.body[0][1])+(height/this.grid.size/2))-((height/grid.size)/1.3));
 
       pop();

@@ -17,6 +17,7 @@ function Sprite(sheet, x, y, size, f, speed, iw, ih){
 
   this.draw = function(){
     imageMode(CENTER);
+    noSmooth();
     image(this.sheet, this.x, this.y, this.w, this.h, this.sw*floor(this.frame), 0, this.sw, this.h);
 
     this.frame += this.speed;

@@ -1,5 +1,7 @@
 var cnv;
 
+//create vars for fotns
+let FFFFORWA;
 //creates the const for all frontend players
 const frontEndPlayers = {}
 //creates the socket for this frontend
@@ -41,8 +43,9 @@ function setup() {
   playButtonDownSprite = loadImage("./assets/sprites/playButtonDown.png");
   playButton = playButtonUpSprite;
   logoLandScapeSheet = loadImage("./assets/sprites/logoLandScape-Sheet.png");
+  FFFFORWA = loadFont("./assets/fonts/FFFFORWA.TTF");
   //create new animation for sprite sheets
-  logoLandScape = new Sprite(logoLandScapeSheet, width/2+(width/64), height/6, width, 50, 0.2, 32000, 320)
+  logoLandScape = new Sprite(logoLandScapeSheet, width/2+(width/64), height/6, width, 50, 0.2, 6400, 64)
 }
 //Puts new players into the players obj where we can see thier basic info
 socket.on("updatePlayers", (backEndPlayers)=>{
