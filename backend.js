@@ -226,19 +226,35 @@ setInterval(() => {
         backEndPlayers[id].len++;
         backEndPlayers[id].body.push(head);
         //remove food and spawn new one
+        location = randomFoodPos()
         backEndFood[i] = {
-          x: Math.floor(Math.random() * gridSize),
-          y: Math.floor(Math.random() * gridSize)
+          x: location[0],
+          y: location[1]
         }
       }
     }
   }
   io.emit("updatePlayers", backEndPlayers)
   io.emit("updateFood", backEndFood)
-}, 120)
+}, playerSpeed)
 
 server.listen(port, () => {
   console.log(`Multisnake app listening on port ${port}`)
 })
+
+function randomFoodPos(){
+  x = Math.floor(Math.random() * gridSize);
+  y = Math.floor(Math.random() * gridSize);
+  for(const id in backEndPlayers){
+    for(const i in backEndPlayers[id].body){
+      if(x == backEndPlayers[id].body[i][0] && y == backEndPlayers[id].body[i][1]){
+        location = randomFoodPos();
+        x = location[0];
+        y = location[1];
+      }
+    }
+  }
+  return [x, y];
+}
 
 console.log("server load succesfull")
