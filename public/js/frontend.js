@@ -47,12 +47,13 @@ function setup() {
   playButtonDownSprite = loadImage("./assets/sprites/playButtonDown.png");
   playButton = playButtonUpSprite;
   logoLandScapeSheet = loadImage("./assets/sprites/logoLandScape-Sheet.png");
+  border = loadImage("./assets/sprites/border.png");
   FFFFORWA = loadFont("./assets/fonts/FFFFORWA.TTF");
   //create new animation for sprite sheets
-  logoLandScape = new Sprite(logoLandScapeSheet, width/2+(width/63), height/6, width*1.13, 50, 0.2, 6400, 64)
+  logoLandScape = new Sprite(logoLandScapeSheet, width/2+(width/63), height/5.6, width*1.13, 50, 0.2, 6400, 64)
 
   //define offset
-  offset = windowHeight/20;
+  offset = windowHeight/23;
   //define game area
   gameWidth = width-offset*2;
   gameHeight = height-offset*2;
@@ -167,8 +168,7 @@ function windowResized() {
 
 //does all the things needed every frame
 function draw(){
-  //draw the border around the screen
-  border("#1BB0DB")
+  background("#0c8a0e");
   push();
   //offsets the playing area
   translate(offset, offset)
@@ -185,6 +185,13 @@ function draw(){
     player.draw();
     player.drawUsernames();
   }
+  //draw the border around the screen
+  drawBorder()
+  //draws usernames
+  for(const id in frontEndPlayers){
+    const player = frontEndPlayers[id]
+    player.drawUsernames();
+  }
   pop();
   //draws main Menu
   drawMenu();
@@ -194,8 +201,9 @@ function draw(){
 }
 
 //draws a border around the playing area
-function border(color){
-  background(color);
+function drawBorder(){
+  imageMode(CORNER)
+  image(border, 0-offset, 0-offset, width, height);
 }
 
 // setInterval(() => {

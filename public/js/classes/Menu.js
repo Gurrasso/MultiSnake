@@ -18,6 +18,7 @@ let playButtonSize;
 let playButtonDownSprite;
 let playButtonUpSprite;
 let logoLandScapeSheet;
+let border;
 //sprite sheets
 let logoLandScape;
 //all the menu sounds here:

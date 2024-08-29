@@ -234,6 +234,7 @@ setInterval(() => {
       }
     }
   }
+  //update players and food
   io.emit("updatePlayers", backEndPlayers)
   io.emit("updateFood", backEndFood)
 }, playerSpeed)
@@ -242,19 +243,33 @@ server.listen(port, () => {
   console.log(`Multisnake app listening on port ${port}`)
 })
 
+//creates a random pos for the food that isnt inside of a player or other food, hopefully.
 function randomFoodPos(){
+  //random pos for food
   x = Math.floor(Math.random() * gridSize);
   y = Math.floor(Math.random() * gridSize);
+  noCol = true;
+  // check if inside of food or player
   for(const id in backEndPlayers){
     for(const i in backEndPlayers[id].body){
       if(x == backEndPlayers[id].body[i][0] && y == backEndPlayers[id].body[i][1]){
-        location = randomFoodPos();
-        x = location[0];
-        y = location[1];
+        noCol = false;
       }
     }
   }
-  return [x, y];
+  for(const i in backEndFood){
+    if(x == backEndFood[i].x && y == backEndFood[i].y){
+      noCol = false;
+    }
+  }
+  if(noCol == false){
+    location = randomFoodPos();
+    x = location[0];
+    y = location[1];
+    return [x, y];
+  } else{
+    return [x, y];
+  }
 }
 
 console.log("server load succesfull")

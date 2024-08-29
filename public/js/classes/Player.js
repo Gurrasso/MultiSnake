@@ -38,7 +38,7 @@ class Player {
       push();
       textAlign(CENTER, CENTER);
       textStyle(BOLD);
-      fill(60, 60, 60);
+      fill(20, 20, 20);
 
       // text in body
       // textSize(gameWidth/grid.size);
