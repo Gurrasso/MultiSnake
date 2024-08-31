@@ -18,25 +18,31 @@ class  InputField {
     this.blinker = "I"
     this.maxChar = 10;
     this.specB;
+    this.tSize = height/39;
   }
 
   //draws input-text onto the screen
   draw(){
+    //hide the field
     if(this.hide == true){return}
     this.text = this.content;
     if(this.selected == true && this.content.length <= 0){
+      //selected blinks but is empty
       this.text = this.blinker
       this.tempC = color(20, 170);
       this.specB = false;
     }else if(this.content.length <= 0){
+      //not selected
       this.text = this.message;
       this.tempC = color(20, 170);
       this.specB = false;
     }else if(this.selected == true && this.content.length > 0){
+      //selected and written in
       this.text = this.content;
       this.tempC = this.c;
       this.specB = true;
     }else{
+      //not selected but written in
       this.text = this.content;
       this.tempC = this.c;
       this.specB = false;
@@ -46,9 +52,10 @@ class  InputField {
     textStyle(BOLD);
     fill(this.tempC);
     textFont(FFFFORWA);
-    textSize(height/35);
+    textSize(this.tSize);
     text(this.text, this.x, this.y+(height/30));
 
+    //display blinker when written in
     if(this.specB == true){
       fill(color(20, 170));
       text(this.blinker, this.x+textWidth(this.content)/1.85, this.y+(height/30));

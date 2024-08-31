@@ -37,10 +37,11 @@ function keyPressed() {
     playButtonDownSound.play();
   }
 
-  //write to content of selected input
+  //write to content of selected input if its selected below maxChar and not too wide
   for(i in inputs){
     if(allowedLetters.includes(key.toLowerCase()) == true){
-      if(inputs[i].selected == true && inputs[i].content.length < inputs[i].maxChar){
+      textSize(inputs[i].tSize)
+      if(inputs[i].selected == true && inputs[i].content.length < inputs[i].maxChar && textWidth(inputs[i].content+"M") < inputs[i].width - width/8){
         inputs[i].content = inputs[i].content.concat(key)
       }
     }
