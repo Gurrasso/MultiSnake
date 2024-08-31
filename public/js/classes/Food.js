@@ -1,4 +1,4 @@
-//a food class that spawns food for the player to eat
+//a food class draws food
 class  Food {
   constructor({grid, x, y}) {
     this.x = x;

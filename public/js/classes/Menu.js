@@ -1,4 +1,6 @@
-var input;
+//vars for input
+const inputBlinkerSpeed = 600;
+var inputs = [];
 //max username length
 const maxUsernameLength = 10;
 //terms that usernames cant include
@@ -19,6 +21,7 @@ let playButtonDownSprite;
 let playButtonUpSprite;
 let logoLandScapeSheet;
 let border;
+let inputBox;
 //sprite sheets
 let logoLandScape;
 //all the menu sounds here:
@@ -34,16 +37,21 @@ function drawMenu(){
   //checks if there is a player and if the player has joined a lobby
   if(!frontEndPlayers[socket.id]){return;}
   if(frontEndPlayers[socket.id].joined == true){
-    input.hide()
+    inputs[0].hide = true;
     return;
   }else {
-    input.show()
+    inputs[0].hide = false;
   }
 
   //draws the play button
   push();
   imageMode(CENTER);
   image(playButton, playButtonX, playButtonY, playButtonSize, playButtonSize);
+  pop();
+  //draws the input username box outline
+  push();
+  imageMode(CORNER);
+  image(inputBox, width/2-(playButtonSize)/2, height/inputY, playButtonSize, playButtonSize);
   pop();
   //draws the logo
   logoLandScape.draw();
@@ -53,13 +61,13 @@ function drawMenu(){
 function joinLobby(){
   setTimeout(() => {
     username = "";
-    if(input.value().length > 1){
-      if(input.value().length > maxUsernameLength){
+    if(inputs[0].content.length > 1){
+      if(inputs[0].content.length > maxUsernameLength){
         for(i = 0; i < maxUsernameLength; i++){
-          username+= input.value()[i];
+          username+= inputs[0].content[i];
         }
       } else {
-        username = input.value();
+        username = inputs[0].content;
       }
     } else{
       username = defaultName;

@@ -1,6 +1,7 @@
 
 const playerInputs = []
 let sequenceNumber = 0
+const allowedLetters="abcdefghijklmnopqrstuvwxyzåäö "
 //input for changing the player position + joining a lobby
 function keyPressed() {
   if(!frontEndPlayers[socket.id]) return;
@@ -35,6 +36,24 @@ function keyPressed() {
     playButton = playButtonDownSprite;
     playButtonDownSound.play();
   }
+
+  //write to content of selected input
+  for(i in inputs){
+    if(allowedLetters.includes(key.toLowerCase()) == true){
+      if(inputs[i].selected == true && inputs[i].content.length < inputs[i].maxChar){
+        inputs[i].content = inputs[i].content.concat(key)
+      }
+    }
+  }
+
+  //delete last letter of inputs content
+  if(keyCode === 8){
+    for(i in inputs){
+      if(inputs[i].selected == true){
+        inputs[i].content = inputs[i].content.slice(0, -1);
+      }
+    }
+  }
 }
 
 function keyReleased() {
@@ -51,6 +70,16 @@ function keyReleased() {
 
 //checks if player has pressed on the join button
 function mousePressed(){
+  //check if player has selected or unselected username box
+  for(i in inputs){
+    if(mouseX > inputs[i].x - inputs[i].width/2 && mouseX < inputs[i].x + inputs[i].width/2 && mouseY > inputs[i].y && mouseY < inputs[i].y + inputs[i].height){
+      //selects the input box
+      inputs[i].selected = true;
+    }else{
+      inputs[i].selected = false;
+    }
+  }
+
   //checks if there is a player and if the player has not joined a lobby
   if(!frontEndPlayers[socket.id]){return;}
   if(frontEndPlayers[socket.id].joined == true){return;}

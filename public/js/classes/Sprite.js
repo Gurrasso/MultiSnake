@@ -23,6 +23,11 @@ function Sprite(sheet, x, y, size, f, speed, iw, ih){
     this.frame += this.speed;
     if(this.frame > this.frames){
       this.frame = 0;
+      if(inputs[i].blinker = "I"){
+        inputs[i].blinker = ""
+      } else{
+        inputs[i].blinker = "I"
+      }
     }
   }
 }

@@ -37,10 +37,13 @@ function setup() {
   playButtonSize = width/3.5;
 
   //create input box for username
-  input = createInput();
-  input.attribute('placeholder', 'Username(max ' + maxUsernameLength + " characters)")
-  input.size(playButtonSize, height/25)
-  input.position(windowWidth/2-(playButtonSize)/2, height/inputY)
+  inputs[0]= new InputField();
+  inputs[0].message = "Username"
+  inputs[0].x = width/2;
+  inputs[0].y = height/inputY;
+  inputs[0].width = width/3.5;
+  inputs[0].height = (width/3.5)*0.22;
+
 
   //load all assets
   playButtonUpSprite = loadImage("./assets/sprites/playButtonUp.png");
@@ -48,6 +51,7 @@ function setup() {
   playButton = playButtonUpSprite;
   logoLandScapeSheet = loadImage("./assets/sprites/logoLandScape-Sheet.png");
   border = loadImage("./assets/sprites/border.png");
+  inputBox = loadImage("./assets/sprites/InputBox.png");
   FFFFORWA = loadFont("./assets/fonts/FFFFORWA.TTF");
   //create new animation for sprite sheets
   logoLandScape = new Sprite(logoLandScapeSheet, width/2+(width/63), height/5.6, width*1.13, 50, 0.2, 6400, 64)
@@ -195,10 +199,22 @@ function draw(){
   pop();
   //draws main Menu
   drawMenu();
-  //update pos and size of username input box
-  input.size(playButtonSize, height/25)
-  input.position(windowWidth/2-(playButtonSize)/2, height/inputY)
+  //update and draw username input box
+  for(i in inputs){
+    inputs[i].draw();
+  }
 }
+
+//update the blinker for the input boxes
+setInterval(() => {
+  for(i in inputs){
+    if(inputs[i].blinker == "I"){
+      inputs[i].blinker = ""
+    } else{
+      inputs[i].blinker = "I"
+    }
+  }
+}, inputBlinkerSpeed)
 
 //draws a border around the playing area
 function drawBorder(){
