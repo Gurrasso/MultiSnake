@@ -23,11 +23,11 @@ function drawGrid(grid, gs){
   for(i=0; i<grid.length;i++){
     for(j=0; j<grid[i].length;j++){
       if((i+j) % 2 == 0){
-        fill(0, 150, 9);
+        fill(gridConfig.color1[0], gridConfig.color1[1], gridConfig.color1[2]);
         noStroke();
         rect((gameWidth/gs) * grid[i][j], (gameHeight/gs) * i, gameWidth/gs);
       }else {
-        fill(0, 200, 0);
+        fill(gridConfig.color2[0], gridConfig.color2[1] ,gridConfig.color2[2]);
         noStroke();
         rect((gameWidth/gs) * grid[i][j], (gameHeight/gs) * i, gameWidth/gs);
       }

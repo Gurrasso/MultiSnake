@@ -5,13 +5,15 @@ class  InputField {
     this.y = 0;
     this.width = 0;
     this.height = 0;
+    this.hideOnJoin = true;
+    this.hide = false;
     //the input that it has
     this.content = "";
-    this.hide = false;
     //the text that it displays
     this.displayText = "";
     //what it displays if content is empty
     this.message = "";
+
     this.c = color(20);
     this.tempC = this.c;
     this.selected = false;
@@ -24,7 +26,7 @@ class  InputField {
   //draws input-text onto the screen
   draw(){
     //hide the field
-    if(this.hide == true){return}
+    if(this.hide == true && this.hideOnJoin == true){return}
     this.text = this.content;
     if(this.selected == true && this.content.length <= 0){
       //selected blinks but is empty

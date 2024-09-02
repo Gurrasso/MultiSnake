@@ -1,18 +1,3 @@
-var cnv;
-
-//offset for the border
-let offset;
-//playing space
-let gameWidth;
-let gameHeight;
-//create vars for fonts
-let FFFFORWA;
-//creates the const for all frontend players
-const frontEndPlayers = {}
-//creates the socket for this frontend
-const socket = io();
-//creates the const for all frontend food
-const frontEndFood = {};
 //creates the canvas
 function centerCanvas() {
   var x = (windowWidth - width) / 2;
@@ -32,17 +17,21 @@ function setup() {
   colorMode(RGB, 255);
 
   //vars for playButtons position
-  playButtonX = width/2;
-  playButtonY = height/2.3;
-  playButtonSize = width/3.5;
+  playButtonX = width/playButtonConfig.playButtonX;
+  playButtonY = height/playButtonConfig.playButtonY;
+  playButtonSize = width/playButtonConfig.playButtonSize;
 
   //create input box for username
   inputs[0]= new InputField();
-  inputs[0].message = "Username"
-  inputs[0].x = width/2;
-  inputs[0].y = height/inputY;
-  inputs[0].width = width/3.5;
-  inputs[0].height = (width/3.5)*0.22;
+  inputs[0].message = usernameInputConfig.message;
+  inputs[0].x = width/usernameInputConfig.x;
+  inputs[0].y = height/usernameInputConfig.y;
+  inputs[0].width = width/usernameInputConfig.size;
+  inputs[0].height = (width/usernameInputConfig.size)*0.22;
+  inputs[0].maxChar = usernameInputConfig.maxCharacters;
+  inputs[0].blinker = usernameInputConfig.blinker;
+  inputs[0].c = color(usernameInputConfig.defaultColor);
+
 
 
   //load all assets
@@ -57,7 +46,7 @@ function setup() {
   logoLandScape = new Sprite(logoLandScapeSheet, width/2+(width/63), height/5.6, width*1.13, 50, 0.2, 6400, 64)
 
   //define offset
-  offset = windowHeight/23;
+  offset = width/offsetConfig.offset;
   //define game area
   gameWidth = width-offset*2;
   gameHeight = height-offset*2;
@@ -208,10 +197,10 @@ function draw(){
 //update the blinker for the input boxes
 setInterval(() => {
   for(i in inputs){
-    if(inputs[i].blinker == "I"){
+    if(inputs[i].blinker == usernameInputConfig.blinker){
       inputs[i].blinker = ""
     } else{
-      inputs[i].blinker = "I"
+      inputs[i].blinker = usernameInputConfig.blinker
     }
   }
 }, inputBlinkerSpeed)
