@@ -4,6 +4,8 @@ const gridSize = 16;
 const moveQueueLength = 2;
 //speed var for the speed of the player and the speed of when the dir will change
 const playerSpeed = 120;
+//playerSmoothing
+let playerSmoothing = 13;
 //make an express server thing
 const express = require('express')
 const app = express()
@@ -51,7 +53,8 @@ io.on('connection', (socket) => {
     len: 0,
     moveQueue: [],
     joined: false,
-    username: ""
+    username: "",
+    playerSmoothingOffset: 0
   }
 
   io.emit("updatePlayers", backEndPlayers)
@@ -73,6 +76,7 @@ io.on('connection', (socket) => {
 
   //Adds the players moves to a queue with a max length of moveQueueLength. Player also cant move in the oppisite dir och thier current direction.
   if(backEndPlayers[socket.id].moveQueue.length < moveQueueLength){
+    console.log(backEndPlayers[socket.id].moveQueue.length, moveQueueLength)
     socket.on("keyPressed", ({keycode, sequenceNumber}) =>{
       backEndPlayers[socket.id].sequenceNumber = sequenceNumber;
       switch (keycode){
@@ -119,6 +123,7 @@ setInterval(() => {
 
     backEndPlayers[id].body[0][0] += backEndPlayers[id].xdir;
     backEndPlayers[id].body[0][1] += backEndPlayers[id].ydir;
+    backEndPlayers[id].playerSmoothingOffset = 0;
   }
 }, playerSpeed)
 
@@ -191,6 +196,16 @@ setInterval(() => {
   }
 }, 15)
 
+//sends out var for a plyers smoothingOffset
+setInterval(() => {
+  for(const id in backEndPlayers){
+    if(backEndPlayers[id].joined == true && backEndPlayers[id].xdir + backEndPlayers[id].ydir != 0){
+      backEndPlayers[id].playerSmoothingOffset += (playerSmoothing/playerSpeed)*1.2;
+    }
+  }
+  io.emit("updatePlayers", backEndPlayers)
+}, playerSmoothing)
+
 //A function that tells the backend what to do when a player dies.
 function die(id){
   // delete backEndPlayers[id];
@@ -211,7 +226,8 @@ function die(id){
     sequenceNumber: 0,
     len: 0,
     moveQueue: [],
-    joined: false
+    joined: false,
+    playerSmoothingOffset: 0
   }
 }
 

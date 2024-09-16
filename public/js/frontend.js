@@ -51,6 +51,7 @@ function setup() {
   gameWidth = width-offset*2;
   gameHeight = height-offset*2;
 }
+
 //Puts new players into the players obj where we can see thier basic info
 socket.on("updatePlayers", (backEndPlayers)=>{
   for(const id in backEndPlayers){
@@ -72,7 +73,8 @@ socket.on("updatePlayers", (backEndPlayers)=>{
           ydir: backEndPlayer.ydir,
           body: backEndPlayer.body,
           len: backEndPlayer.len,
-          joined: backEndPlayer.joined
+          joined: backEndPlayer.joined,
+          playerSmoothingOffset: backEndPlayer.playerSmoothingOffset
         });
         //give the player an x and y
         frontEndPlayers[id].body[0] =[backEndPlayer.x, backEndPlayer.y]
@@ -88,6 +90,7 @@ socket.on("updatePlayers", (backEndPlayers)=>{
         frontEndPlayers[id].len = backEndPlayer.len
         frontEndPlayers[id].joined = backEndPlayer.joined
         frontEndPlayers[id].username = backEndPlayer.username
+        frontEndPlayers[id].playerSmoothingOffset = backEndPlayer.playerSmoothingOffset
         //splicing out all the non needed indexes
         // const lastBackendInputIndex = playerInputs.findIndex(input => {
         //   return backEndPlayers.sequenceNumber === input.sequenceNumber
@@ -108,6 +111,7 @@ socket.on("updatePlayers", (backEndPlayers)=>{
         frontEndPlayers[id].len = backEndPlayer.len
         frontEndPlayers[id].joined = backEndPlayer.joined
         frontEndPlayers[id].username = backEndPlayer.username
+        frontEndPlayers[id].playerSmoothingOffset = backEndPlayer.playerSmoothingOffset
 
         // for(i = 0; i < frontEndPlayers[id].body.length; i++){
         //   gsap.to(frontEndPlayers[id].body[i], {
@@ -161,7 +165,7 @@ function windowResized() {
 
 //does all the things needed every frame
 function draw(){
-  background("#0c8a0e");
+  background(color(bgu[0], bgu[1], bgu[2]));
   push();
   //offsets the playing area
   translate(offset, offset)
@@ -176,7 +180,6 @@ function draw(){
     const player = frontEndPlayers[id]
     player.update();
     player.draw();
-    player.drawUsernames();
   }
   //draw the border around the screen
   drawBorder()
@@ -210,12 +213,3 @@ function drawBorder(){
   imageMode(CORNER)
   image(border, 0-offset, 0-offset, width, height);
 }
-
-// setInterval(() => {
-//   // //move player
-//   // var head = frontEndPlayers[socket.id].body[frontEndPlayers[socket.id].body.length-1];
-//   // frontEndPlayers[socket.id].body.shift();
-//   // head[0] += frontEndPlayers[socket.id].xdir;
-//   // head[1] += frontEndPlayers[socket.id].ydir;
-//   // frontEndPlayers[socket.id].body.push(head);
-// }, 120)
