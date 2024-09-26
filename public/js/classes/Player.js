@@ -30,12 +30,18 @@ class Player {
     if(this.joined == true){
       fill(this.color);
       for (let i = 0; i < this.body.length; i++) {
+        //makes an offset fort the parts of the player
         if(i > 0){
           this.offset = [((gameWidth/grid.size)*(this.body[i][0] - this.body[i-1][0])*this.playerSmoothingOffset)*-1, ((gameWidth/grid.size)*(this.body[i][1] - this.body[i-1][1])*this.playerSmoothingOffset)*-1]
-        }else{
+        }else if(Math.abs(this.xdir) + Math.abs(this.ydir) < 2){
           this.offset = [((gameWidth/grid.size)*((this.body[i][0]-(this.body[i][0]+this.xdir))*this.playerSmoothingOffset))*-1, ((gameWidth/grid.size)*((this.body[i][1]-(this.body[i][1]+this.ydir))*this.playerSmoothingOffset))*-1]
         }
+        //draws the players parts
         rect(((gameWidth/grid.size)*this.body[i][0])+this.offset[0], ((gameHeight/grid.size)*this.body[i][1])+this.offset[1], gameHeight/grid.size);
+        //draws an extra for corners
+        if(i != this.body.length-1){
+          rect(((gameWidth/grid.size)*this.body[i][0]), ((gameHeight/grid.size)*this.body[i][1]), gameHeight/grid.size);
+        }
       }
     }
   }
@@ -57,7 +63,11 @@ class Player {
       //text above head
       textFont(FFFFORWA);
       textSize((gameWidth/grid.size)/2.5);
-      this.offset = [((gameWidth/grid.size)*((this.body[i][0]-(this.body[i][0]+this.xdir))*this.playerSmoothingOffset))*-1, ((gameWidth/grid.size)*((this.body[i][1]-(this.body[i][1]+this.ydir))*this.playerSmoothingOffset))*-1]
+      if(Math.abs(this.xdir) + Math.abs(this.ydir) < 2){
+        this.offset = [((gameWidth/grid.size)*((this.body[i][0]-(this.body[i][0]+this.xdir))*this.playerSmoothingOffset))*-1, ((gameWidth/grid.size)*((this.body[i][1]-(this.body[i][1]+this.ydir))*this.playerSmoothingOffset))*-1]
+      }
+      stroke(playerConfig.strokeColor[0], playerConfig.strokeColor[1], playerConfig.strokeColor[2])
+      strokeWeight(playerConfig.strokeWeight)
       text(this.username, (((gameWidth/grid.size)*this.body[0][0])+(gameWidth/this.grid.size/2))+this.offset[0], ((((gameHeight/this.grid.size)*this.body[0][1])+(gameHeight/this.grid.size/2))-((gameHeight/grid.size)/1.3))+this.offset[1]);
 
       pop();

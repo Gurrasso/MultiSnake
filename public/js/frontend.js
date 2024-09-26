@@ -68,7 +68,7 @@ socket.on("updatePlayers", (backEndPlayers)=>{
         //create a new player
         frontEndPlayers[id] = new Player({
           grid: grid,
-          color: color(backEndPlayer.r, backEndPlayer.g, backEndPlayer.b),
+          color: color(playerConfig.enemyColor[0], playerConfig.enemyColor[1], playerConfig.enemyColor[2]),
           xdir: backEndPlayer.xdir,
           ydir: backEndPlayer.ydir,
           body: backEndPlayer.body,
@@ -84,13 +84,14 @@ socket.on("updatePlayers", (backEndPlayers)=>{
     } else {
       if(id === socket.id){
         //if a player already exists
-        frontEndPlayers[id].xdir = backEndPlayer.xdir
-        frontEndPlayers[id].ydir = backEndPlayer.ydir
         frontEndPlayers[id].body = backEndPlayer.body
         frontEndPlayers[id].len = backEndPlayer.len
         frontEndPlayers[id].joined = backEndPlayer.joined
         frontEndPlayers[id].username = backEndPlayer.username
         frontEndPlayers[id].playerSmoothingOffset = backEndPlayer.playerSmoothingOffset
+        frontEndPlayers[id].ydir = backEndPlayer.ydir
+        frontEndPlayers[id].xdir = backEndPlayer.xdir
+
         //splicing out all the non needed indexes
         // const lastBackendInputIndex = playerInputs.findIndex(input => {
         //   return backEndPlayers.sequenceNumber === input.sequenceNumber
@@ -105,13 +106,14 @@ socket.on("updatePlayers", (backEndPlayers)=>{
         // })
       }else{
         //for all other players
-        frontEndPlayers[id].xdir = backEndPlayer.xdir
-        frontEndPlayers[id].ydir = backEndPlayer.ydir
         frontEndPlayers[id].body = backEndPlayer.body
         frontEndPlayers[id].len = backEndPlayer.len
         frontEndPlayers[id].joined = backEndPlayer.joined
         frontEndPlayers[id].username = backEndPlayer.username
         frontEndPlayers[id].playerSmoothingOffset = backEndPlayer.playerSmoothingOffset
+        frontEndPlayers[id].ydir = backEndPlayer.ydir
+        frontEndPlayers[id].xdir = backEndPlayer.xdir
+
 
         // for(i = 0; i < frontEndPlayers[id].body.length; i++){
         //   gsap.to(frontEndPlayers[id].body[i], {
@@ -130,7 +132,7 @@ socket.on("updatePlayers", (backEndPlayers)=>{
       delete frontEndPlayers[id]
     }
   }
-  frontEndPlayers[socket.id].color = color(0, 0, 255)
+  frontEndPlayers[socket.id].color = color(playerConfig.playerColor[0], playerConfig.playerColor[1], playerConfig.playerColor[2])
 })
 
 //update the food.

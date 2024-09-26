@@ -4,6 +4,8 @@ const gridSize = 16;
 const moveQueueLength = 2;
 //speed var for the speed of the player and the speed of when the dir will change
 const playerSpeed = 120;
+//var for how often players will update
+const playerUpdateInterval = 1;
 //playerSmoothing
 let playerSmoothing = 13;
 //make an express server thing
@@ -42,9 +44,6 @@ io.on('connection', (socket) => {
   backEndPlayers[socket.id] = {
     x: x,
     y: y,
-    r: 169,
-    g: 0,
-    b: 255,
     xdir: 0,
     ydir: 0,
     body: [[x, y]],
@@ -82,28 +81,28 @@ io.on('connection', (socket) => {
       switch (keycode){
         case "KeyW":
           //checks if player has joined the lobby
-          if(backEndPlayers[socket.id].joined == true){
+          if(backEndPlayers[socket.id].joined == true && backEndPlayers[socket.id].moveQueue.length < moveQueueLength){
             backEndPlayers[socket.id].moveQueue.push([0, -1]);
           }
           break
 
         case "KeyA":
           //checks if player has joined the lobby
-          if(backEndPlayers[socket.id].joined == true){
+          if(backEndPlayers[socket.id].joined == true && backEndPlayers[socket.id].moveQueue.length < moveQueueLength){
             backEndPlayers[socket.id].moveQueue.push([-1, 0]);
           }
           break
 
         case "KeyS":
           //checks if player has joined the lobby
-          if(backEndPlayers[socket.id].joined == true){
+          if(backEndPlayers[socket.id].joined == true && backEndPlayers[socket.id].moveQueue.length < moveQueueLength){
             backEndPlayers[socket.id].moveQueue.push([0, 1]);
           }
           break
 
         case "KeyD":
           //checks if player has joined the lobby
-          if(backEndPlayers[socket.id].joined == true){
+          if(backEndPlayers[socket.id].joined == true && backEndPlayers[socket.id].moveQueue.length < moveQueueLength){
             backEndPlayers[socket.id].moveQueue.push([1, 0]);
           }
           break
@@ -113,7 +112,7 @@ io.on('connection', (socket) => {
   console.log(backEndPlayers)
 });
 
-//moves the players.
+//does everyting that needs to be done in playerSpeed
 setInterval(() => {
   for(const id in backEndPlayers){
     //move player
@@ -125,10 +124,31 @@ setInterval(() => {
     backEndPlayers[id].body[0][1] += backEndPlayers[id].ydir;
     backEndPlayers[id].playerSmoothingOffset = 0;
   }
-}, playerSpeed)
 
-//changes the dirs of the players with the moveQueue.
-setInterval(() => {
+  //checks if the player has eaten food and if so they grow the player.
+  for(const id in backEndPlayers){
+    //check if player has eaten food
+    for(const i in backEndFood){
+      if(backEndPlayers[id].body[0][0] == backEndFood[i].x && backEndPlayers[id].body[0][1] == backEndFood[i].y){
+        //grow player
+        let head = backEndPlayers[id].body[backEndPlayers[id].body.length-1];
+        backEndPlayers[id].len++;
+        backEndPlayers[id].body.push(head);
+        //remove food and spawn new one
+        location = randomFoodPos()
+        backEndFood[i] = {
+          x: location[0],
+          y: location[1]
+        }
+      }
+    }
+
+    //update players and food
+    io.emit("updatePlayers", backEndPlayers)
+    io.emit("updateFood", backEndFood)
+  }
+
+  //changes the dirs of the players with the moveQueue.
   try{
     for(const id in backEndPlayers){
       for(i = 0; i < backEndPlayers[id].moveQueue.length; i++){
@@ -149,6 +169,9 @@ setInterval(() => {
   } finally{
     return;
   }
+  //update player and food
+  io.emit("updatePlayers", backEndPlayers)
+  io.emit("updateFood", backEndFood)
 }, playerSpeed)
 
 //Checks if the player has hit itself or another snake and if so tells them to die().
@@ -199,12 +222,16 @@ setInterval(() => {
 //sends out var for a plyers smoothingOffset
 setInterval(() => {
   for(const id in backEndPlayers){
-    if(backEndPlayers[id].joined == true && backEndPlayers[id].xdir + backEndPlayers[id].ydir != 0){
+    if(backEndPlayers[id].joined == true && Math.abs(backEndPlayers[id].xdir) + Math.abs(backEndPlayers[id].ydir) != 0){
       backEndPlayers[id].playerSmoothingOffset += (playerSmoothing/playerSpeed)*1.2;
     }
   }
-  io.emit("updatePlayers", backEndPlayers)
 }, playerSmoothing)
+
+//updates players
+setInterval(() => {
+  io.emit("updatePlayers", backEndPlayers)
+}, playerUpdateInterval)
 
 //A function that tells the backend what to do when a player dies.
 function die(id){
@@ -216,9 +243,6 @@ function die(id){
   backEndPlayers[id] = {
     x: x,
     y: y,
-    r: 169,
-    g: 0,
-    b: 255,
     xdir: 0,
     ydir: 0,
     body: [[x, y]],
@@ -230,30 +254,6 @@ function die(id){
     playerSmoothingOffset: 0
   }
 }
-
-//checks if the player has eaten food and if so they grow the player.
-setInterval(() => {
-  for(const id in backEndPlayers){
-    //check if player has eaten food
-    for(const i in backEndFood){
-      if(backEndPlayers[id].body[0][0] == backEndFood[i].x && backEndPlayers[id].body[0][1] == backEndFood[i].y){
-        //grow player
-        let head = backEndPlayers[id].body[backEndPlayers[id].body.length-1];
-        backEndPlayers[id].len++;
-        backEndPlayers[id].body.push(head);
-        //remove food and spawn new one
-        location = randomFoodPos()
-        backEndFood[i] = {
-          x: location[0],
-          y: location[1]
-        }
-      }
-    }
-  }
-  //update players and food
-  io.emit("updatePlayers", backEndPlayers)
-  io.emit("updateFood", backEndFood)
-}, playerSpeed)
 
 server.listen(port, () => {
   console.log(`Multisnake app listening on port ${port}`)
