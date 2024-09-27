@@ -77,7 +77,7 @@ class Player {
       textFont(FFFFORWA);
       textSize((gameWidth/grid.size)/2.5);
       if(Math.abs(this.xdir) + Math.abs(this.ydir) < 2){
-        this.offset = [((gameWidth/grid.size)*((this.body[i][0]-(this.body[i][0]+this.xdir))*this.playerSmoothingOffset))*-1, ((gameWidth/grid.size)*((this.body[i][1]-(this.body[i][1]+this.ydir))*this.playerSmoothingOffset))*-1]
+        this.offset = [((gameWidth/grid.size)*((this.body[0][0]-(this.body[0][0]+this.xdir))*this.playerSmoothingOffset))*-1, ((gameWidth/grid.size)*((this.body[0][1]-(this.body[0][1]+this.ydir))*this.playerSmoothingOffset))*-1]
       }
       stroke(playerConfig.strokeColor[0], playerConfig.strokeColor[1], playerConfig.strokeColor[2])
       strokeWeight(playerConfig.strokeWeight)
