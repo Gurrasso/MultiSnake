@@ -192,7 +192,10 @@ setInterval(() => {
           if(backEndPlayers[j] != backEndPlayers[id]){
             for(const i in backEndPlayers[j].body){
               if(backEndPlayers[id].body[0][0] == backEndPlayers[j].body[i][0] && backEndPlayers[id].body[0][1] == backEndPlayers[j].body[i][1]){
-                die(id)
+                //checks that the player u are hitting has joined
+                if(backEndPlayers[j].joined == true){
+                    die(id);
+                }
               }
             }
           }
