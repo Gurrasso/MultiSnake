@@ -10,6 +10,10 @@ class Player {
     this.xdir = xdir;
     this.ydir = ydir;
     this.playerSmoothingOffset = playerSmoothingOffset;
+    // temp vars for how much the colors should be offset
+    this.rTempColorOffset = 0;
+    this.gTempColorOffset = 0;
+    this.bTempColorOffset = 0;
   }
 
   //Updates all of the things for the snake
@@ -28,7 +32,6 @@ class Player {
   //draws the Player
   draw(){
     if(this.joined == true){
-      fill(this.color);
       for (let i = 0; i < this.body.length; i++) {
         //makes an offset fort the parts of the player
         if(i > 0){
@@ -36,10 +39,20 @@ class Player {
         }else if(Math.abs(this.xdir) + Math.abs(this.ydir) < 2){
           this.offset = [((gameWidth/grid.size)*((this.body[i][0]-(this.body[i][0]+this.xdir))*this.playerSmoothingOffset))*-1, ((gameWidth/grid.size)*((this.body[i][1]-(this.body[i][1]+this.ydir))*this.playerSmoothingOffset))*-1]
         }
+        //decides how much the colors should be offset
+        if(i>0){
+          this.tempColorOffset = i*(playerConfig.lowestColor/(this.body.length));
+        }else{
+          this.tempColorOffset = 0;
+        }
+
         //draws the players parts
+        noStroke();
+        fill(this.color.levels[0]-this.tempColorOffset, this.color.levels[1]-this.tempColorOffset, this.color.levels[2]-this.tempColorOffset, 255);
         rect(((gameWidth/grid.size)*this.body[i][0])+this.offset[0], ((gameHeight/grid.size)*this.body[i][1])+this.offset[1], gameHeight/grid.size);
         //draws an extra for corners
         if(i != this.body.length-1){
+          fill(this.color.levels[0]-this.tempColorOffset, this.color.levels[1]-this.tempColorOffset, this.color.levels[2]-this.tempColorOffset, 255);
           rect(((gameWidth/grid.size)*this.body[i][0]), ((gameHeight/grid.size)*this.body[i][1]), gameHeight/grid.size);
         }
       }

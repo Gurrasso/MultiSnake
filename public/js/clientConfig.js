@@ -45,9 +45,10 @@ const allowedUsernameconfig = {
 //clientSide vars for players
 var playerConfig = {
   strokeColor: [230, 230, 230],
-  strokeWeight: [5],
+  strokeWeight: 5,
   playerColor: [0, 0, 255],
-  enemyColor: [169, 0, 255]
+  enemyColor: [169, 0, 255],
+  lowestColor: 90
 };
 
 //config for the username input box

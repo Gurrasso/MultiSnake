@@ -22,6 +22,7 @@ function createGrid(grid, size){
 function drawGrid(grid, gs){
   for(i=0; i<grid.length;i++){
     for(j=0; j<grid[i].length;j++){
+      push();
       if((i+j) % 2 == 0){
         fill(gridConfig.color1[0], gridConfig.color1[1], gridConfig.color1[2]);
         noStroke();
@@ -31,6 +32,7 @@ function drawGrid(grid, gs){
         noStroke();
         rect((gameWidth/gs) * grid[i][j], (gameHeight/gs) * i, gameWidth/gs);
       }
+      pop();
     }
   }
 }

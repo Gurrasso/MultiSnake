@@ -3,7 +3,7 @@ const gridSize = 16;
 //maximum length of the players moveQueue
 const moveQueueLength = 2;
 //speed var for the speed of the player and the speed of when the dir will change
-const playerSpeed = 120;
+const playerSpeed = 140;
 //var for how often players will update
 const playerUpdateInterval = 1;
 //playerSmoothing
