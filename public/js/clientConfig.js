@@ -35,20 +35,13 @@ var gridConfig = {
 //background color(not the one outside of canvas)
 bgu = gridConfig.color1;
 
-//config for username related stuff
-const allowedUsernameconfig = {
-  maxUsernameLength: 10,
-  bannedUsernameTerms: [],
-  defaultName: "Guest"
-};
-
 //clientSide vars for players
 var playerConfig = {
   strokeColor: [230, 230, 230],
   strokeWeight: 5,
-  playerColor: [0, 0, 255],
-  enemyColor: [169, 0, 255],
-  lowestColor: 90
+  playerColor: [0, 0, 245],
+  enemyColor: [169, 0, 245],
+  lowestColor: 80
 };
 
 //config for the username input box

@@ -1,5 +1,11 @@
+//config for username related stuff
+const allowedUsernameconfig = {
+  maxUsernameLength: 10,
+  bannedUsernameTerms: [],
+  defaultName: "Guest"
+};
 //choose the siza of the grid
-const gridSize = 16;
+const gridSize = 12;
 //maximum length of the players moveQueue
 const moveQueueLength = 2;
 //speed var for the speed of the player and the speed of when the dir will change
@@ -67,15 +73,33 @@ io.on('connection', (socket) => {
   })
 
   //checks if a player has asked to join the lobby.
-  socket.on("joined", ({lobby, username}) =>{
+  socket.on("joined", ({username}) =>{
+    //makes sure the player has an allowed username
+    tempUsername = "";
+    if(username.length>0 && username.replace(/\s/g, '').length>0){
+      if(username.length > allowedUsernameconfig.maxUsernameLength){
+        for(i = 0; i < allowedUsernameconfig.maxUsernameLength; i++){
+          tempUsername+= username[i];
+        }
+      } else {
+        tempUsername = username;
+      }
+    } else{
+      tempUsername = allowedUsernameconfig.defaultName;
+    }
+
+    for(i = 0; i < allowedUsernameconfig.bannedUsernameTerms.length; i++){
+      if(username.toLowerCase().includes(allowedUsernameconfig.bannedUsernameTerms[i].toLowerCase())){
+        tempUsername = allowedUsernameconfig.defaultName;
+      }
+    }
     backEndPlayers[socket.id].joined = true;
-    backEndPlayers[socket.id].username = username;
+    backEndPlayers[socket.id].username = tempUsername;
     io.emit("updatePlayers", backEndPlayers)
   })
 
   //Adds the players moves to a queue with a max length of moveQueueLength. Player also cant move in the oppisite dir och thier current direction.
   if(backEndPlayers[socket.id].moveQueue.length < moveQueueLength){
-    console.log(backEndPlayers[socket.id].moveQueue.length, moveQueueLength)
     socket.on("keyPressed", ({keycode, sequenceNumber}) =>{
       backEndPlayers[socket.id].sequenceNumber = sequenceNumber;
       switch (keycode){

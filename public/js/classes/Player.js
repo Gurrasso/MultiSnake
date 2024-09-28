@@ -52,6 +52,7 @@ class Player {
         rect(((gameWidth/grid.size)*this.body[i][0])+this.offset[0], ((gameHeight/grid.size)*this.body[i][1])+this.offset[1], gameHeight/grid.size);
         //draws an extra for corners
         if(i != this.body.length-1){
+          noStroke();
           fill(this.color.levels[0]-this.tempColorOffset, this.color.levels[1]-this.tempColorOffset, this.color.levels[2]-this.tempColorOffset, 255);
           rect(((gameWidth/grid.size)*this.body[i][0]), ((gameHeight/grid.size)*this.body[i][1]), gameHeight/grid.size);
         }

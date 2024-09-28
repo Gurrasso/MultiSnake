@@ -41,7 +41,7 @@ function keyPressed() {
   for(i in inputs){
     if(allowedLetters.includes(key.toLowerCase()) == true){
       textSize(inputs[i].tSize)
-      if(inputs[i].selected == true && inputs[i].content.length < inputs[i].maxChar && textWidth(inputs[i].content+"M") < inputs[i].width - width/8){
+      if(inputs[i].selected == true && inputs[i].content.length < inputs[i].maxChar && textWidth(inputs[i].content+"M") < inputs[i].width - width/8 && frontEndPlayers[socket.id].joined == false){
         inputs[i].content = inputs[i].content.concat(key)
       }
     }

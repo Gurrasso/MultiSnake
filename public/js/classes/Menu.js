@@ -26,25 +26,7 @@ function drawMenu(){
 //function for joining the lobby with a username
 function joinLobby(){
   setTimeout(() => {
-    username = "";
-    if(inputs[0].content.length > 1){
-      if(inputs[0].content.length > allowedUsernameconfig.maxUsernameLength){
-        for(i = 0; i < allowedUsernameconfig.maxUsernameLength; i++){
-          username+= inputs[0].content[i];
-        }
-      } else {
-        username = inputs[0].content;
-      }
-    } else{
-      username = allowedUsernameconfig.defaultName;
-    }
-
-    for(i = 0; i < allowedUsernameconfig.bannedUsernameTerms.length; i++){
-      if(username.toLowerCase().includes(allowedUsernameconfig.bannedUsernameTerms[i].toLowerCase())){
-        username = allowedUsernameconfig.defaultName;
-      }
-    }
-
-    socket.emit("joined", {lobby: 0, username: username});
+    //send out the username and that you are joining
+    socket.emit("joined", {username: inputs[0].content});
   }, joinDelay);
 }
