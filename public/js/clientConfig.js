@@ -39,7 +39,7 @@ bgu = gridConfig.color1;
 var playerConfig = {
   strokeColor: [230, 230, 230],
   strokeWeight: 5,
-  playerColor: [0, 0, 245],
+  playerColor: [50, 55, 245],
   enemyColor: [169, 0, 245],
   lowestColor: 80
 };
@@ -72,6 +72,7 @@ let playButtonUpSprite;
 let logoLandScapeSheet;
 let border;
 let inputBox;
+let PlayerNormalanimationSheet;
 
 //sprite sheets
 let logoLandScape;

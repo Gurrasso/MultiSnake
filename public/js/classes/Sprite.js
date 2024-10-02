@@ -16,18 +16,25 @@ function Sprite(sheet, x, y, size, f, speed, iw, ih){
   this.h = this.w*(this.ih/this.sw)
 
   this.draw = function(){
-    imageMode(CENTER);
     noSmooth();
     image(this.sheet, this.x, this.y, this.w, this.h, this.sw*floor(this.frame), 0, this.sw, this.h);
 
     this.frame += this.speed;
     if(this.frame > this.frames){
       this.frame = 0;
-      if(inputs[i].blinker = "I"){
-        inputs[i].blinker = ""
-      } else{
-        inputs[i].blinker = "I"
-      }
     }
   }
+}
+
+//function for swapping colors of the image
+function palletteSwap(img, color){
+  this.img = img;
+  this.img.loadPixels();
+  for (let x = 0; x < this.img.width; x += 1) {
+    for (let y = 0; y < this.img.height; y += 1) {
+      this.img.set(x, y, 0);
+    }
+  }
+  this.img.updatePixels();
+  return this.img;
 }

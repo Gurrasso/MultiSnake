@@ -5,7 +5,7 @@ const allowedUsernameconfig = {
   defaultName: "Guest"
 };
 //choose the siza of the grid
-const gridSize = 12;
+const gridSize = 16;
 //maximum length of the players moveQueue
 const moveQueueLength = 2;
 //speed var for the speed of the player and the speed of when the dir will change

@@ -41,6 +41,8 @@ function setup() {
   logoLandScapeSheet = loadImage("./assets/sprites/logoLandScape-Sheet.png");
   border = loadImage("./assets/sprites/border.png");
   inputBox = loadImage("./assets/sprites/InputBox.png");
+  PlayerNormalanimationSheet = loadImage("./assets/sprites/PlayerNormalanimation.png");
+  PlayerNormalanimationSheet = palletteSwap(PlayerNormalanimationSheet, color(255, 255, 255))
   FFFFORWA = loadFont("./assets/fonts/FFFFORWA.TTF");
   //create new animation for sprite sheets
   logoLandScape = new Sprite(logoLandScapeSheet, width/2+(width/63), height/5.6, width*1.13, 50, 0.2, 6400, 64)

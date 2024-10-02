@@ -10,6 +10,8 @@ class Player {
     this.xdir = xdir;
     this.ydir = ydir;
     this.playerSmoothingOffset = playerSmoothingOffset;
+    this.PlayerNormalanimationSheet = PlayerNormalanimationSheet;
+    this.PlayerNormalanimation = new Sprite(this.PlayerNormalanimationSheet, 0, 0, 0, 100, 0.2, 1400, 14);
     // temp vars for how much the colors should be offset
     this.rTempColorOffset = 0;
     this.gTempColorOffset = 0;
@@ -56,6 +58,27 @@ class Player {
           fill(this.color.levels[0]-this.tempColorOffset, this.color.levels[1]-this.tempColorOffset, this.color.levels[2]-this.tempColorOffset, 255);
           rect(((gameWidth/grid.size)*this.body[i][0]), ((gameHeight/grid.size)*this.body[i][1]), gameHeight/grid.size);
         }
+        if(i == 0){
+          //draw the players animation for the head
+          push();
+          this.PlayerNormalanimation.w = ((gameHeight/grid.size)/8)*14
+          this.PlayerNormalanimation.h = this.PlayerNormalanimation.w*(this.PlayerNormalanimation.ih/this.PlayerNormalanimation.sw)
+          this.tempX = ((((gameWidth/grid.size)*this.body[i][0])+this.offset[0])+(gameHeight/grid.size)/2);
+          this.tempY = (((gameHeight/grid.size)*this.body[i][1])+this.offset[1]+(((gameHeight/grid.size)/2)));
+          this.tempRotation = (float)(Math.atan2(this.ydir, this.xdir) / (2 * Math.PI))-0.25;
+          imageMode(CENTER)
+          angleMode(DEGREES);
+          translate(this.tempX, this.tempY);
+          //if player hasnt started moving they point down otherwise in direction of movement
+          if(Math.abs(this.xdir) + Math.abs(this.ydir) > 0){
+            rotate(this.tempRotation*360)
+          }else{
+            rotate(0)
+          }
+          this.PlayerNormalanimation.draw();
+          translate(0);
+          pop();
+        }
       }
     }
   }
@@ -82,7 +105,7 @@ class Player {
       }
       stroke(playerConfig.strokeColor[0], playerConfig.strokeColor[1], playerConfig.strokeColor[2])
       strokeWeight(playerConfig.strokeWeight)
-      text(this.username, (((gameWidth/grid.size)*this.body[0][0])+(gameWidth/this.grid.size/2))+this.offset[0], ((((gameHeight/this.grid.size)*this.body[0][1])+(gameHeight/this.grid.size/2))-((gameHeight/grid.size)/1.3))+this.offset[1]);
+      // text(this.username, (((gameWidth/grid.size)*this.body[0][0])+(gameWidth/this.grid.size/2))+this.offset[0], ((((gameHeight/this.grid.size)*this.body[0][1])+(gameHeight/this.grid.size/2))-((gameHeight/grid.size)/1.3))+this.offset[1]);
 
       pop();
     }

@@ -34,6 +34,10 @@ function keyPressed() {
     //checks if player has pressed space or enter and if so changes the button sprite to the down verison.
     if(frontEndPlayers[socket.id].joined == true) return;
     playButton = playButtonDownSprite;
+    //deselect inputs when pressing enter
+    for(i in inputs){
+        inputs[i].selected = false;
+    }
     playButtonDownSound.play();
   }
 

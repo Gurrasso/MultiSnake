@@ -20,6 +20,7 @@ function drawMenu(){
   image(inputBox, width/2-(playButtonSize)/2, height/usernameInputConfig.y, playButtonSize, playButtonSize);
   pop();
   //draws the logo
+  imageMode(CENTER)
   logoLandScape.draw();
 }
 
