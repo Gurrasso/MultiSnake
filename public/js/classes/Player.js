@@ -1,6 +1,6 @@
 //A player class with different vals
 class Player {
-  constructor({grid, color, body, len, joined, username, xdir, ydir, playerSmoothingOffset}) {
+  constructor({grid, color, body, len, joined, username, xdir, ydir, playerSmoothingOffset, Normalanimation}) {
     this.body = body;
     this.grid = grid;
     this.len = len;
@@ -10,12 +10,14 @@ class Player {
     this.xdir = xdir;
     this.ydir = ydir;
     this.playerSmoothingOffset = playerSmoothingOffset;
-    this.PlayerNormalanimationSheet = PlayerNormalanimationSheet;
-    this.PlayerNormalanimation = new Sprite(this.PlayerNormalanimationSheet, 0, 0, 0, 100, 0.2, 1400, 14);
+    this.PlayerNormalanimationSheet = Normalanimation;
+    this.PlayerAnimation = new Sprite(this.PlayerNormalanimationSheet, 0, 0, 0, 100, 0.2, 1400, 14);
     // temp vars for how much the colors should be offset
     this.rTempColorOffset = 0;
     this.gTempColorOffset = 0;
     this.bTempColorOffset = 0;
+    //var for seeing if player has joined or left
+    this.loaded = false;
   }
 
   //Updates all of the things for the snake
@@ -61,8 +63,8 @@ class Player {
         if(i == 0){
           //draw the players animation for the head
           push();
-          this.PlayerNormalanimation.w = ((gameHeight/grid.size)/8)*14
-          this.PlayerNormalanimation.h = this.PlayerNormalanimation.w*(this.PlayerNormalanimation.ih/this.PlayerNormalanimation.sw)
+          this.PlayerAnimation.w = ((gameHeight/grid.size)/8)*14
+          this.PlayerAnimation.h = this.PlayerAnimation.w*(this.PlayerAnimation.ih/this.PlayerAnimation.sw)
           this.tempX = ((((gameWidth/grid.size)*this.body[i][0])+this.offset[0])+(gameHeight/grid.size)/2);
           this.tempY = (((gameHeight/grid.size)*this.body[i][1])+this.offset[1]+(((gameHeight/grid.size)/2)));
           this.tempRotation = (float)(Math.atan2(this.ydir, this.xdir) / (2 * Math.PI))-0.25;
@@ -75,8 +77,8 @@ class Player {
           }else{
             rotate(0)
           }
-          this.PlayerNormalanimation.draw();
-          translate(0);
+          this.PlayerAnimation.draw();
+          translate(0, 0);
           pop();
         }
       }

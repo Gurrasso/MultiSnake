@@ -42,7 +42,7 @@ function setup() {
   border = loadImage("./assets/sprites/border.png");
   inputBox = loadImage("./assets/sprites/InputBox.png");
   PlayerNormalanimationSheet = loadImage("./assets/sprites/PlayerNormalanimation.png");
-  PlayerNormalanimationSheet = palletteSwap(PlayerNormalanimationSheet, color(255, 255, 255))
+  EnemyPlayerNormalanimationSheet = loadImage("./assets/sprites/PlayerNormalanimation.png");
   FFFFORWA = loadFont("./assets/fonts/FFFFORWA.TTF");
   //create new animation for sprite sheets
   logoLandScape = new Sprite(logoLandScapeSheet, width/2+(width/63), height/5.6, width*1.13, 50, 0.2, 6400, 64)
@@ -68,15 +68,25 @@ socket.on("updatePlayers", (backEndPlayers)=>{
 
       try{
         //create a new player
+        if(socket.id == id){
+          //if its your player
+          playerColor = color(playerColorConfig.playerColor[0], playerColorConfig.playerColor[1], playerColorConfig.playerColor[2])
+          Normalanimation = PlayerNormalanimationSheet
+        }else {
+          //if its other player
+          playerColor = color(playerColorConfig.enemyColor[0], playerColorConfig.enemyColor[1], playerColorConfig.enemyColor[2])
+          Normalanimation = EnemyPlayerNormalanimationSheet
+        }
         frontEndPlayers[id] = new Player({
           grid: grid,
-          color: color(playerConfig.enemyColor[0], playerConfig.enemyColor[1], playerConfig.enemyColor[2]),
+          color: playerColor,
           xdir: backEndPlayer.xdir,
           ydir: backEndPlayer.ydir,
           body: backEndPlayer.body,
           len: backEndPlayer.len,
           joined: backEndPlayer.joined,
-          playerSmoothingOffset: backEndPlayer.playerSmoothingOffset
+          playerSmoothingOffset: backEndPlayer.playerSmoothingOffset,
+          Normalanimation: Normalanimation
         });
         //give the player an x and y
         frontEndPlayers[id].body[0] =[backEndPlayer.x, backEndPlayer.y]
@@ -134,7 +144,6 @@ socket.on("updatePlayers", (backEndPlayers)=>{
       delete frontEndPlayers[id]
     }
   }
-  frontEndPlayers[socket.id].color = color(playerConfig.playerColor[0], playerConfig.playerColor[1], playerConfig.playerColor[2])
 })
 
 //update the food.
@@ -169,6 +178,8 @@ function windowResized() {
 
 //does all the things needed every frame
 function draw(){
+  //only draw if everything is loaded
+  if(frontEndPlayers[socket.id].loaded == false){return;}
   background(color(bgu[0], bgu[1], bgu[2]));
   push();
   //offsets the playing area

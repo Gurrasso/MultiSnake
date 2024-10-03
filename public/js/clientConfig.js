@@ -6,6 +6,9 @@ let offsetConfig = {
 }
 let offset;
 
+//time to set off to loading things
+loadingTime = 75;
+
 //playing space
 let gameWidth;
 let gameHeight;
@@ -39,9 +42,12 @@ bgu = gridConfig.color1;
 var playerConfig = {
   strokeColor: [230, 230, 230],
   strokeWeight: 5,
-  playerColor: [50, 55, 245],
-  enemyColor: [169, 0, 245],
   lowestColor: 80
+};
+
+var playerColorConfig = {
+  playerColor: [50, 55, 245],
+  enemyColor: [169, 0, 245]
 };
 
 //config for the username input box
@@ -73,6 +79,7 @@ let logoLandScapeSheet;
 let border;
 let inputBox;
 let PlayerNormalanimationSheet;
+let EnemyPlayerNormalanimationSheet;
 
 //sprite sheets
 let logoLandScape;
