@@ -7,11 +7,21 @@ let offsetConfig = {
 let offset;
 
 //time to set off to loading things
-loadingTime = 75;
+loadingTime = 200;
+//a value for the loading bar
+loadingBarOffset = 0;
 
 //playing space
 let gameWidth;
 let gameHeight;
+
+//var for if the game is loaded
+let loaded = false;
+
+//config for the loading loadinganimation
+const loadingAnimationConfig = {
+  loadingbarColor: [80, 85, 255]
+}
 
 //create vars for fonts
 let FFFFORWA;
@@ -47,7 +57,7 @@ var playerConfig = {
 
 var playerColorConfig = {
   playerColor: [50, 55, 245],
-  enemyColor: [169, 0, 245]
+  enemyColor: [157, 0, 255]
 };
 
 //config for the username input box
@@ -80,6 +90,7 @@ let border;
 let inputBox;
 let PlayerNormalanimationSheet;
 let EnemyPlayerNormalanimationSheet;
+let loadingSprite;
 
 //sprite sheets
 let logoLandScape;

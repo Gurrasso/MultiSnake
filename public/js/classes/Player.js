@@ -16,8 +16,6 @@ class Player {
     this.rTempColorOffset = 0;
     this.gTempColorOffset = 0;
     this.bTempColorOffset = 0;
-    //var for seeing if player has joined or left
-    this.loaded = false;
   }
 
   //Updates all of the things for the snake

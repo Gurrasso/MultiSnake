@@ -32,12 +32,31 @@ function joinLobby(){
   }, joinDelay);
 }
 
+//draws a spinning loading animation
+function drawLoading(){
+  if(loadingBarOffset>1){
+    loadingBarOffset = 1;
+  }else{
+    loadingBarOffset += (1/loadingTime)*15;
+  }
+  background("#0c8a0e");
+  //draws the loading sprite
+  push();
+  imageMode(CENTER);
+  noSmooth();
+  noStroke();
+  fill(loadingAnimationConfig.loadingbarColor)
+  rect((width/2-playButtonSize/2)+playButtonSize/32, height/2-(playButtonSize/32)*4, (playButtonSize-((playButtonSize/32)*2))*max( 0, min(loadingBarOffset, 1) ), (playButtonSize/32)*8);
+  image(loadingSprite, width/2, height/2, playButtonSize, playButtonSize);
+  pop();
+}
+
 //loads some stuff like for example changes colors of players(kinda janky)
 setInterval(() => {
   //update colors
   for(const id in frontEndPlayers){
     const player = frontEndPlayers[id]
-    if(frontEndPlayers[socket.id].loaded != true){
+    if(loaded != true){
       EnemyPlayerNormalanimationSheet = palletteSwap(EnemyPlayerNormalanimationSheet, [color(50, 55, 245, 255), color(39, 43, 189, 255)], color(playerColorConfig.enemyColor[0], playerColorConfig.enemyColor[1], playerColorConfig.enemyColor[2]));
       PlayerNormalanimationSheet = palletteSwap(PlayerNormalanimationSheet, [color(50, 55, 245, 255), color(39, 43, 189, 255)], color(playerColorConfig.playerColor[0], playerColorConfig.playerColor[1], playerColorConfig.playerColor[2]));
       if(socket.id == id){
@@ -49,7 +68,7 @@ setInterval(() => {
         player.color = color(playerColorConfig.enemyColor[0], playerColorConfig.enemyColor[1], playerColorConfig.enemyColor[2])
         player.PlayerAnimation.sheet = EnemyPlayerNormalanimationSheet
       }
-      player.loaded = true;
+      loaded = true;
     }
   }
-}, loadingTime)
+}, 500)

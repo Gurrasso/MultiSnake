@@ -1,0 +1,27 @@
+{
+  "short_name": "MS",
+  "name": "Multisnake",
+  "icons": [
+    {
+      "src": "assets/sprites/LogoSmall.png",
+      "sizes": "11x11",
+      "type": "image/png"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "##0c8a0e",
+  "background_color": "#3452eb"
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "*.html",
+        "*.css",
+        "assets/sprites/PlayerNormalanimation.png"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
+  ]
+}

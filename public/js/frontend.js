@@ -35,6 +35,7 @@ function setup() {
 
 
   //load all assets
+  loadingSprite = loadImage("./assets/sprites/loadingSprite.png");
   playButtonUpSprite = loadImage("./assets/sprites/playButtonUp.png");
   playButtonDownSprite = loadImage("./assets/sprites/playButtonDown.png");
   playButton = playButtonUpSprite;
@@ -179,7 +180,10 @@ function windowResized() {
 //does all the things needed every frame
 function draw(){
   //only draw if everything is loaded
-  if(frontEndPlayers[socket.id].loaded == false){return;}
+  if(loaded == false){
+    drawLoading();
+    return;
+  }
   background(color(bgu[0], bgu[1], bgu[2]));
   push();
   //offsets the playing area
