@@ -105,7 +105,7 @@ class Player {
       }
       stroke(playerConfig.strokeColor[0], playerConfig.strokeColor[1], playerConfig.strokeColor[2])
       strokeWeight(playerConfig.strokeWeight)
-      // text(this.username, (((gameWidth/grid.size)*this.body[0][0])+(gameWidth/this.grid.size/2))+this.offset[0], ((((gameHeight/this.grid.size)*this.body[0][1])+(gameHeight/this.grid.size/2))-((gameHeight/grid.size)/1.3))+this.offset[1]);
+      text(this.username, (((gameWidth/grid.size)*this.body[0][0])+(gameWidth/this.grid.size/2))+this.offset[0], ((((gameHeight/this.grid.size)*this.body[0][1])+(gameHeight/this.grid.size/2))-((gameHeight/grid.size)/1.3))+this.offset[1]);
 
       pop();
     }
