@@ -69,7 +69,7 @@ socket.on("updatePlayers", (backEndPlayers)=>{
         localStorage.setItem("ID", socket.id);
       }
       //load save data from locally stored ID
-      socket.emit("loadSave", {id:localStorage.getItem("ID")})
+      socket.emit("sendID", {id:localStorage.getItem("ID")})
 
       try{
         //create a new player
@@ -180,6 +180,7 @@ socket.on("updateFood", (backEndFood)=>{
 
 //updates the player data after the save data has been retrieved
 socket.on("updateSaveData", ({saveData}) =>{
+  if(!saveData.username){return}
   frontEndPlayers[socket.id].username = saveData.username;
   //make the players input field have the right content
   inputs[0].content = frontEndPlayers[socket.id].username;

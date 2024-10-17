@@ -1,11 +1,12 @@
 //the json save file
-const JSON_FILE = "saves.json"
+const JSON_SAVE_FILE = "saves.json"
 //an object for tying player id to socket.id'
 var backEndIDs = {};
 // importing the fs module
 const fs = require("fs");
 //var for the saved data
 var saves = {};
+var saveData = {};
 //config for username related stuff
 const allowedUsernameconfig = {
   maxUsernameLength: 10,
@@ -72,9 +73,9 @@ io.on('connection', (socket) => {
 
   io.emit("updatePlayers", backEndPlayers)
 
-  socket.on("loadSave", ({id}) =>{
+  socket.on("sendID", ({id}) =>{
     //gets the players previous data from the saves.json file
-    var jsonData = fs.readFileSync(JSON_FILE);
+    var jsonData = fs.readFileSync(JSON_SAVE_FILE);
     var saveData = JSON.parse(jsonData);
     if(!saveData[id]){
       saveData[id] = {
@@ -96,6 +97,7 @@ io.on('connection', (socket) => {
     try {
 
       tempUsername = backEndPlayers[socket.id].username;
+      console.log(tempUsername)
       if(tempUsername == allowedUsernameconfig.defaultName){
         tempUsername = ""
       };
@@ -104,7 +106,7 @@ io.on('connection', (socket) => {
       };
 
       // updating the JSON file
-      fs.writeFileSync(JSON_FILE, JSON.stringify(saves));
+      fs.writeFileSync(JSON_SAVE_FILE, JSON.stringify(saves));
     } catch (error) {
       // logging the error
       console.error(error);
@@ -313,19 +315,17 @@ function die(id){
   // io.emit(updatePlayers", backEndPlayers)
   var x = Math.floor(Math.random() * gridSize);
   var y = Math.floor(Math.random() * gridSize);
-  backEndPlayers[id] = {
-    x: x,
-    y: y,
-    xdir: 0,
-    ydir: 0,
-    body: [[x, y]],
-    gridSize: gridSize,
-    sequenceNumber: 0,
-    len: 0,
-    moveQueue: [],
-    joined: false,
-    playerSmoothingOffset: 0
-  }
+  backEndPlayers[id].x = x;
+  backEndPlayers[id].y = y;
+  backEndPlayers[id].xdir = 0;
+  backEndPlayers[id].ydir = 0;
+  backEndPlayers[id].body = [[x,y]];
+  backEndPlayers[id].gridSize = gridSize;
+  backEndPlayers[id].sequenceNumber = 0;
+  backEndPlayers[id].len = 0;
+  backEndPlayers[id].moveQueue = [];
+  backEndPlayers[id].joined = false;
+  backEndPlayers[id].playerSmoothingOffset = 0;
 }
 
 server.listen(port, () => {
