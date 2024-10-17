@@ -179,8 +179,9 @@ socket.on("updateFood", (backEndFood)=>{
 })
 
 //updates the player data after the save data has been retrieved
-socket.on("updateSaveData", ({saveData}) =>{
+socket.on("updateSaveData", ({saveData, id}) =>{
   if(!saveData.username){return}
+  if(id != localStorage.getItem("ID")){return}
   frontEndPlayers[socket.id].username = saveData.username;
   //make the players input field have the right content
   inputs[0].content = frontEndPlayers[socket.id].username;

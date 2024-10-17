@@ -5,7 +5,6 @@ var backEndIDs = {};
 // importing the fs module
 const fs = require("fs");
 //var for the saved data
-var saves = {};
 var saveData = {};
 //config for username related stuff
 const allowedUsernameconfig = {
@@ -86,7 +85,7 @@ io.on('connection', (socket) => {
       id: id
     }
     backEndPlayers[socket.id].username = saveData[id].username;
-    io.emit("updateSaveData", {saveData: saveData[id]})
+    io.emit("updateSaveData", {saveData: saveData[id], id: id})
 
   })
 
@@ -96,17 +95,20 @@ io.on('connection', (socket) => {
     //save the players information
     try {
 
+      //load the save data
+      var jsonData = fs.readFileSync(JSON_SAVE_FILE);
+      var saveData = JSON.parse(jsonData);
+
       tempUsername = backEndPlayers[socket.id].username;
-      console.log(tempUsername)
       if(tempUsername == allowedUsernameconfig.defaultName){
         tempUsername = ""
       };
-      saves[backEndIDs[socket.id].id] = {
+      saveData[backEndIDs[socket.id].id] = {
         username: tempUsername
       };
 
       // updating the JSON file
-      fs.writeFileSync(JSON_SAVE_FILE, JSON.stringify(saves));
+      fs.writeFileSync(JSON_SAVE_FILE, JSON.stringify(saveData));
     } catch (error) {
       // logging the error
       console.error(error);
