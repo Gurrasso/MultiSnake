@@ -32,8 +32,6 @@ function setup() {
   inputs[0].blinker = usernameInputConfig.blinker;
   inputs[0].c = color(usernameInputConfig.defaultColor);
 
-
-
   //load all assets
   loadingSprite = loadImage("./assets/sprites/loadingSprite.png");
   playButtonUpSprite = loadImage("./assets/sprites/playButtonUp.png");
@@ -66,6 +64,12 @@ socket.on("updatePlayers", (backEndPlayers)=>{
       grid = new Grid(backEndPlayer.gridSize)
       //creates the actual grid inside the grid class
       grid.grid = createGrid(grid.grid, grid.size, grid.size)
+      //creates a locally stored id for the player
+      if(!localStorage.getItem("ID")){
+        localStorage.setItem("ID", socket.id);
+      }
+      //load save data from locally stored ID
+      socket.emit("loadSave", {id:localStorage.getItem("ID")})
 
       try{
         //create a new player
@@ -81,6 +85,7 @@ socket.on("updatePlayers", (backEndPlayers)=>{
         frontEndPlayers[id] = new Player({
           grid: grid,
           color: playerColor,
+          username: backEndPlayer.username,
           xdir: backEndPlayer.xdir,
           ydir: backEndPlayer.ydir,
           body: backEndPlayer.body,
@@ -171,6 +176,13 @@ socket.on("updateFood", (backEndFood)=>{
       delete frontEndFood[id]
     }
   }
+})
+
+//updates the player data after the save data has been retrieved
+socket.on("updateSaveData", ({saveData}) =>{
+  frontEndPlayers[socket.id].username = saveData.username;
+  //make the players input field have the right content
+  inputs[0].content = frontEndPlayers[socket.id].username;
 })
 
 function windowResized() {

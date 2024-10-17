@@ -1,3 +1,11 @@
+//the json save file
+const JSON_FILE = "saves.json"
+//an object for tying player id to socket.id'
+var backEndIDs = {};
+// importing the fs module
+const fs = require("fs");
+//var for the saved data
+var saves = {};
 //config for username related stuff
 const allowedUsernameconfig = {
   maxUsernameLength: 10,
@@ -64,8 +72,46 @@ io.on('connection', (socket) => {
 
   io.emit("updatePlayers", backEndPlayers)
 
+  socket.on("loadSave", ({id}) =>{
+    //gets the players previous data from the saves.json file
+    var jsonData = fs.readFileSync(JSON_FILE);
+    var saveData = JSON.parse(jsonData);
+    if(!saveData[id]){
+      saveData[id] = {
+        username: ""
+      };
+    }
+    backEndIDs[socket.id] = {
+      id: id
+    }
+    backEndPlayers[socket.id].username = saveData[id].username;
+    io.emit("updateSaveData", {saveData: saveData[id]})
+
+  })
+
   //check if a player disconnected
   socket.on("disconnect", (reason) =>{
+
+    //save the players information
+    try {
+
+      tempUsername = backEndPlayers[socket.id].username;
+      if(tempUsername == allowedUsernameconfig.defaultName){
+        tempUsername = ""
+      };
+      saves[backEndIDs[socket.id].id] = {
+        username: tempUsername
+      };
+
+      // updating the JSON file
+      fs.writeFileSync(JSON_FILE, JSON.stringify(saves));
+    } catch (error) {
+      // logging the error
+      console.error(error);
+
+      throw error;
+    }
+
     console.log(reason)
     delete backEndPlayers[socket.id];
     delete backEndFood[socket.id];
