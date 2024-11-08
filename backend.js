@@ -103,9 +103,13 @@ io.on('connection', (socket) => {
       if(tempUsername == allowedUsernameconfig.defaultName){
         tempUsername = ""
       };
-      saveData[backEndIDs[socket.id].id] = {
-        username: tempUsername
-      };
+      try {
+        saveData[backEndIDs[socket.id].id] = {
+          username: tempUsername
+        };
+      } catch{
+        console.log("Failed to save for ", socket.id);
+      }
 
       // updating the JSON file
       fs.writeFileSync(JSON_SAVE_FILE, JSON.stringify(saveData));
