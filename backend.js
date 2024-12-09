@@ -73,19 +73,28 @@ io.on('connection', (socket) => {
   io.emit("updatePlayers", backEndPlayers)
 
   socket.on("sendID", ({id}) =>{
-    //gets the players previous data from the saves.json file
-    var jsonData = fs.readFileSync(JSON_SAVE_FILE);
-    var saveData = JSON.parse(jsonData);
-    if(!saveData[id]){
-      saveData[id] = {
-        username: ""
-      };
+    try {
+      //gets the players previous data from the saves.json file
+      var jsonData = fs.readFileSync(JSON_SAVE_FILE);
+      //returns if there is no data to read in json file
+      if(jsonData == ""){return};
+
+      var saveData = JSON.parse(jsonData);
+      if(!saveData[id]){
+        saveData[id] = {
+          username: ""
+        };
+      }
+      backEndIDs[socket.id] = {
+        id: id
+      }
+      backEndPlayers[socket.id].username = saveData[id].username;
+      io.emit("updateSaveData", {saveData: saveData[id], id: id})
+    } catch (error) {
+      console.log("failed to save for", socket.id);
+      console.error(error);
     }
-    backEndIDs[socket.id] = {
-      id: id
-    }
-    backEndPlayers[socket.id].username = saveData[id].username;
-    io.emit("updateSaveData", {saveData: saveData[id], id: id})
+
 
   })
 
@@ -97,6 +106,9 @@ io.on('connection', (socket) => {
 
       //load the save data
       var jsonData = fs.readFileSync(JSON_SAVE_FILE);
+      //returns if there is no data to read in json file
+      if(jsonData == ""){return};
+
       var saveData = JSON.parse(jsonData);
 
       tempUsername = backEndPlayers[socket.id].username;
@@ -115,9 +127,8 @@ io.on('connection', (socket) => {
       fs.writeFileSync(JSON_SAVE_FILE, JSON.stringify(saveData));
     } catch (error) {
       // logging the error
+      console.log("failed to save for", socket.id);
       console.error(error);
-
-      throw error;
     }
 
     console.log(reason)
