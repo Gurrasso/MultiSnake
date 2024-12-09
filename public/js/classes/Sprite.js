@@ -27,7 +27,7 @@ function Sprite(sheet, x, y, size, f, speed, iw, ih){
 }
 
 //function for swapping colors of the image
-function palletteSwap(img, palette, newColor){
+function paletteSwap(img, palette, newColor){
   this.palette = palette;
   this.newColor = newColor;
   img.loadPixels();
