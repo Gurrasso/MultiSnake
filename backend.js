@@ -73,64 +73,61 @@ io.on('connection', (socket) => {
   io.emit("updatePlayers", backEndPlayers)
 
   socket.on("sendID", ({id}) =>{
-    try {
-      //gets the players previous data from the saves.json file
-      var jsonData = fs.readFileSync(JSON_SAVE_FILE);
-      //returns if there is no data to read in json file
-      if(jsonData == ""){return};
+    //gets the players previous data from the saves.json file
+    var jsonData = fs.readFileSync(JSON_SAVE_FILE);
 
+
+    //if the json file isnt empty
+    if(jsonData != ""){
+      //saveData is the parsed jsonData
       var saveData = JSON.parse(jsonData);
+      //if there is no saveData with that id
       if(!saveData[id]){
         saveData[id] = {
           username: ""
         };
       }
-      backEndIDs[socket.id] = {
-        id: id
-      }
+
+
       backEndPlayers[socket.id].username = saveData[id].username;
       io.emit("updateSaveData", {saveData: saveData[id], id: id})
-    } catch (error) {
-      console.log("failed to save for", socket.id);
-      console.error(error);
     }
 
-
+    //save the id of the players
+    backEndIDs[socket.id] = {
+      id: id
+    }
   })
 
   //check if a player disconnected
   socket.on("disconnect", (reason) =>{
 
+
     //save the players information
-    try {
 
-      //load the save data
-      var jsonData = fs.readFileSync(JSON_SAVE_FILE);
-      //returns if there is no data to read in json file
-      if(jsonData == ""){return};
+    //load the save data
+    var jsonData = fs.readFileSync(JSON_SAVE_FILE);
 
+    //if the json file is empty make save data empty, otherwise make saveData = the parsed jsonDAta
+    if(jsonData == ""){
+      var saveData = {};
+    }else{
       var saveData = JSON.parse(jsonData);
-
-      tempUsername = backEndPlayers[socket.id].username;
-      if(tempUsername == allowedUsernameconfig.defaultName){
-        tempUsername = ""
-      };
-      try {
-        saveData[backEndIDs[socket.id].id] = {
-          username: tempUsername
-        };
-      } catch{
-        console.log("Failed to save for ", socket.id);
-      }
-
-      // updating the JSON file
-      fs.writeFileSync(JSON_SAVE_FILE, JSON.stringify(saveData));
-    } catch (error) {
-      // logging the error
-      console.log("failed to save for", socket.id);
-      console.error(error);
     }
 
+    tempUsername = backEndPlayers[socket.id].username;
+    if(tempUsername == allowedUsernameconfig.defaultName){
+      tempUsername = ""
+    };
+
+
+    saveData[backEndIDs[socket.id].id] = {
+      username: tempUsername
+    };
+    // updating the JSON file
+    fs.writeFileSync(JSON_SAVE_FILE, JSON.stringify(saveData));
+
+    //delete player and food, log the reason and update the players
     console.log(reason)
     delete backEndPlayers[socket.id];
     delete backEndFood[socket.id];
