@@ -38,7 +38,7 @@ function setup() {
   playButtonDownSprite = loadImage("./assets/sprites/playButtonDown.png");
   playButton = playButtonUpSprite;
   logoLandScapeSheet = loadImage("./assets/sprites/logoLandScape-Sheet.png");
-  border = loadImage("./assets/sprites/border.png");
+  border = loadImage("./assets/sprites/Border.png");
   inputBox = loadImage("./assets/sprites/InputBox.png");
   PlayerNormalanimationSheet = loadImage("./assets/sprites/PlayerNormalanimation.png");
   EnemyPlayerNormalanimationSheet = loadImage("./assets/sprites/PlayerNormalanimation.png");
