@@ -1,3 +1,5 @@
+
+
 //creates the canvas
 function centerCanvas() {
   var x = (windowWidth - width) / 2;
@@ -92,7 +94,8 @@ socket.on("updatePlayers", (backEndPlayers)=>{
           len: backEndPlayer.len,
           joined: backEndPlayer.joined,
           playerSmoothingOffset: backEndPlayer.playerSmoothingOffset,
-          Normalanimation: Normalanimation
+          Normalanimation: Normalanimation,
+          playerSpeed: backEndPlayer.playerSpeed
         });
         //give the player an x and y
         frontEndPlayers[id].body[0] =[backEndPlayer.x, backEndPlayer.y]
@@ -246,3 +249,17 @@ function drawBorder(){
   imageMode(CORNER)
   image(border, 0-offset, 0-offset, width, height);
 }
+
+//Doing client side prediction
+setInterval(() => {
+  for(const id in frontEndPlayers){
+    //move player
+    for(let i = frontEndPlayers[id].body.length-2; i >= 0; i--){
+      frontEndPlayers[id].body[i+1] = { ...frontEndPlayers[id].body[i] }
+    }
+
+    frontEndPlayers[id].body[0][0] += frontEndPlayers[id].xdir;
+    frontEndPlayers[id].body[0][1] += frontEndPlayers[id].ydir;
+    frontEndPlayers[id].playerSmoothingOffset = 0;
+  }
+}, frontEndPlayers[socket.id].playerSpeed)
