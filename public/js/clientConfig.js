@@ -6,6 +6,8 @@ let offsetConfig = {
 }
 let offset;
 
+//temporary trigger for starting client side prediction when everything is initiated
+let tempTrigger = false
 //time to set off to loading things
 loadingTime = 200;
 //a value for the loading bar

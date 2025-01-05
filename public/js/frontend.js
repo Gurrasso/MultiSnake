@@ -95,7 +95,8 @@ socket.on("updatePlayers", (backEndPlayers)=>{
           joined: backEndPlayer.joined,
           playerSmoothingOffset: backEndPlayer.playerSmoothingOffset,
           Normalanimation: Normalanimation,
-          playerSpeed: backEndPlayer.playerSpeed
+          playerSpeed: backEndPlayer.playerSpeed,
+          playerSmoothing: backEndPlayer.playerSmoothing
         });
         //give the player an x and y
         frontEndPlayers[id].body[0] =[backEndPlayer.x, backEndPlayer.y]
@@ -112,6 +113,8 @@ socket.on("updatePlayers", (backEndPlayers)=>{
         frontEndPlayers[id].playerSmoothingOffset = backEndPlayer.playerSmoothingOffset
         frontEndPlayers[id].ydir = backEndPlayer.ydir
         frontEndPlayers[id].xdir = backEndPlayer.xdir
+        frontEndPlayers[id].playerSpeed = backEndPlayer.playerSpeed
+        frontEndPlayers[id].playerSmoothing = backEndPlayer.playerSmoothing
 
         //splicing out all the non needed indexes
         // const lastBackendInputIndex = playerInputs.findIndex(input => {
@@ -134,6 +137,9 @@ socket.on("updatePlayers", (backEndPlayers)=>{
         frontEndPlayers[id].playerSmoothingOffset = backEndPlayer.playerSmoothingOffset
         frontEndPlayers[id].ydir = backEndPlayer.ydir
         frontEndPlayers[id].xdir = backEndPlayer.xdir
+        frontEndPlayers[id].playerSpeed = backEndPlayer.playerSpeed
+        frontEndPlayers[id].playerSmoothing = backEndPlayer.playerSmoothing
+
 
 
         // for(i = 0; i < frontEndPlayers[id].body.length; i++){
@@ -196,10 +202,14 @@ function windowResized() {
 
 //does all the things needed every frame
 function draw(){
+
   //only draw if everything is loaded
   if(loaded == false){
     drawLoading();
-    return;
+    return; 
+  }else if(loaded == true && tempTrigger == false){
+    clientSidePrediction();
+    tempTrigger = true;
   }
   background(color(bgu[0], bgu[1], bgu[2]));
   push();
@@ -250,16 +260,29 @@ function drawBorder(){
   image(border, 0-offset, 0-offset, width, height);
 }
 
-//Doing client side prediction
-setInterval(() => {
-  for(const id in frontEndPlayers){
-    //move player
-    for(let i = frontEndPlayers[id].body.length-2; i >= 0; i--){
-      frontEndPlayers[id].body[i+1] = { ...frontEndPlayers[id].body[i] }
-    }
 
-    frontEndPlayers[id].body[0][0] += frontEndPlayers[id].xdir;
-    frontEndPlayers[id].body[0][1] += frontEndPlayers[id].ydir;
-    frontEndPlayers[id].playerSmoothingOffset = 0;
-  }
-}, frontEndPlayers[socket.id].playerSpeed)
+function clientSidePrediction(){
+  //doing smoothingOffset
+  setInterval(() => {
+    for(const id in frontEndPlayers){
+      if(frontEndPlayers[id].joined == true && Math.abs(frontEndPlayers[id].xdir) + Math.abs(frontEndPlayers[id].ydir) != 0){
+        frontEndPlayers[id].playerSmoothingOffset += (frontEndPlayers[id].playerSmoothing/frontEndPlayers[id].playerSpeed)*1.2;
+      }
+    }
+  }, frontEndPlayers[socket.id].playerSmoothing)
+
+
+  //Doing client side prediction
+  setInterval(() => {
+    for(const id in frontEndPlayers){
+      //move player
+      for(let i = frontEndPlayers[id].body.length-2; i >= 0; i--){
+        frontEndPlayers[id].body[i+1] = { ...frontEndPlayers[id].body[i] }
+      }
+
+      frontEndPlayers[id].body[0][0] += frontEndPlayers[id].xdir;
+      frontEndPlayers[id].body[0][1] += frontEndPlayers[id].ydir;
+      frontEndPlayers[id].playerSmoothingOffset = 0;
+    }
+  }, frontEndPlayers[socket.id].playerSpeed)
+}

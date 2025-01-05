@@ -68,7 +68,8 @@ io.on('connection', (socket) => {
     joined: false,
     username: "",
     playerSmoothingOffset: 0,
-    playerSpeed: playerSpeed
+    playerSpeed: playerSpeed,
+    playerSmoothing: playerSmoothing
   }
 
   io.emit("updatePlayers", backEndPlayers)
