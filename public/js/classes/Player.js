@@ -20,17 +20,9 @@ class Player {
 
   //Updates all of the things for the snake
   update(){
-    //checks if player is outside of area
-    if(this.body[0].x < 0 || this.body[0].x >= this.grid.size || this.body[0].y < 0 || this.body[0].y >= this.grid.size){
-      this.die()
-    }
-    //checks if player is in player
-    for(i = 0; i < this.body.length-1; i++){
-      if(this.body[this.body.length-1].x == this.body[i].x && this.body[this.body.length-1].y == this.body[i].y){
-        this.die()
-      }
-    }
+    return;
   }
+
   //draws the Player
   draw(){
     if(this.joined == true){
@@ -113,6 +105,11 @@ class Player {
 
   //does the actions needed for the player to die
   die(){
-    return
+    console.log("death animation")
   }
 }
+
+// tells players to die when server tells them to
+socket.on("die", (id)=>{
+  frontEndPlayers[id].die();
+})

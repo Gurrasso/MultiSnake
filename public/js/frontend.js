@@ -1,11 +1,11 @@
 
-
-//creates the canvas
+//centers the canvas
 function centerCanvas() {
   var x = (windowWidth - width) / 2;
   var y = (windowHeight - height) / 2;
   cnv.position(x, y);
 }
+
 //does all the nesessary things for setting up the game
 function setup() {
   if(windowWidth < windowHeight){
@@ -116,18 +116,6 @@ socket.on("updatePlayers", (backEndPlayers)=>{
         frontEndPlayers[id].playerSpeed = backEndPlayer.playerSpeed
         frontEndPlayers[id].playerSmoothing = backEndPlayer.playerSmoothing
 
-        //splicing out all the non needed indexes
-        // const lastBackendInputIndex = playerInputs.findIndex(input => {
-        //   return backEndPlayers.sequenceNumber === input.sequenceNumber
-        // })
-        //
-        // if(lastBackendInputIndex > -1)
-        //   playerInputs.splice(0, lastBackendInputIndex+1);
-        //
-        // playerInputs.forEach(input => {
-        //   frontEndPlayers[id].xdir = input.dx;
-        //   frontEndPlayers[id].ydir = input.dy;
-        // })
       }else{
         //for all other players
         frontEndPlayers[id].body = backEndPlayer.body
@@ -141,15 +129,6 @@ socket.on("updatePlayers", (backEndPlayers)=>{
         frontEndPlayers[id].playerSmoothing = backEndPlayer.playerSmoothing
 
 
-
-        // for(i = 0; i < frontEndPlayers[id].body.length; i++){
-        //   gsap.to(frontEndPlayers[id].body[i], {
-        //     x: backEndPlayer.body[i].x,
-        //     y: backEndPlayer.body[i].y,
-        //     duration: 0.12,
-        //     ease: "linear"
-        //   })
-        // }
       }
     }
   }
@@ -206,7 +185,7 @@ function draw(){
   //only draw if everything is loaded
   if(loaded == false){
     drawLoading();
-    return; 
+    return;
   }else if(loaded == true && tempTrigger == false){
     clientSidePrediction();
     tempTrigger = true;
@@ -262,27 +241,27 @@ function drawBorder(){
 
 
 function clientSidePrediction(){
-  //doing smoothingOffset
-  setInterval(() => {
-    for(const id in frontEndPlayers){
-      if(frontEndPlayers[id].joined == true && Math.abs(frontEndPlayers[id].xdir) + Math.abs(frontEndPlayers[id].ydir) != 0){
-        frontEndPlayers[id].playerSmoothingOffset += (frontEndPlayers[id].playerSmoothing/frontEndPlayers[id].playerSpeed)*1.2;
-      }
-    }
-  }, frontEndPlayers[socket.id].playerSmoothing)
-
-
-  //Doing client side prediction
-  setInterval(() => {
-    for(const id in frontEndPlayers){
-      //move player
-      for(let i = frontEndPlayers[id].body.length-2; i >= 0; i--){
-        frontEndPlayers[id].body[i+1] = { ...frontEndPlayers[id].body[i] }
-      }
-
-      frontEndPlayers[id].body[0][0] += frontEndPlayers[id].xdir;
-      frontEndPlayers[id].body[0][1] += frontEndPlayers[id].ydir;
-      frontEndPlayers[id].playerSmoothingOffset = 0;
-    }
-  }, frontEndPlayers[socket.id].playerSpeed)
+  // //doing smoothingOffset prediction
+  // setInterval(() => {
+  //   for(const id in frontEndPlayers){
+  //     if(frontEndPlayers[id].joined == true && Math.abs(frontEndPlayers[id].xdir) + Math.abs(frontEndPlayers[id].ydir) != 0){
+  //       frontEndPlayers[id].playerSmoothingOffset += (frontEndPlayers[id].playerSmoothing/frontEndPlayers[id].playerSpeed)*1.2;
+  //     }
+  //   }
+  // }, frontEndPlayers[socket.id].playerSmoothing)
+  //
+  //
+  // //Doing client side prediction
+  // setInterval(() => {
+  //   for(const id in frontEndPlayers){
+  //     //move player
+  //     for(let i = frontEndPlayers[id].body.length-2; i >= 0; i--){
+  //       frontEndPlayers[id].body[i+1] = { ...frontEndPlayers[id].body[i] }
+  //     }
+  //
+  //     frontEndPlayers[id].body[0][0] += frontEndPlayers[id].xdir;
+  //     frontEndPlayers[id].body[0][1] += frontEndPlayers[id].ydir;
+  //     frontEndPlayers[id].playerSmoothingOffset = 0;
+  //   }
+  // }, frontEndPlayers[socket.id].playerSpeed)
 }

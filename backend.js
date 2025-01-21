@@ -326,6 +326,7 @@ setInterval(() => {
 
 //A function that tells the backend what to do when a player dies.
 function die(id){
+  io.emit("die", id)
   // delete backEndPlayers[id];
   // delete backEndFood[id];
   // io.emit(updatePlayers", backEndPlayers)
